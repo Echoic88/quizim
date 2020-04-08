@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Echoic88/quizim.svg?branch=master)](https://travis-ci.org/Echoic88/quizim)
+
 # Quizim
 This is a quiz creation application. This allows users to create quizes as well as play quizes created by other users and the site admin. Site admin can charge for access to quizes they create. The application also provides statistics and charts on performance of users.
 
