@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_countries',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +151,5 @@ EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 465
+
+LOGIN_URL = "/"
