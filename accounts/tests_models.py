@@ -5,6 +5,8 @@ from .models import Profile
 
 
 # Create your tests here.
+
+
 class ProfileTest(TestCase):
     """
     Test the Profile model
@@ -119,3 +121,14 @@ class ProfileTest(TestCase):
         with self.assertRaisesMessage(ValidationError, "This is not a valid country"):
             profile.clean()
         
+
+    def test_raise_ValidationError_if_profile_pic_is_not_JPEG_or_PNG_type(self):
+        data = self.profile_data
+        print(data["profile_pic"])
+        #data["profile_pic"] = "./test_pictures/test_text_file.txt"
+        Profile.objects.update(user=self.user, **data)
+        profile = Profile.objects.get(user=self.user)
+        with self.assertRaises(ValidationError):
+            profile.clean()
+
+    

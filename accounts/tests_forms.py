@@ -2,7 +2,22 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Profile
-from .forms import ProfileForm
+from .forms import ProfileForm, SignUpForm
+
+
+class SignUpFormTest(TestCase):
+    def test_signup_form_saves_user_when_there_is_valid_data(self):
+        data = {
+            "username":"test1234",
+            "password1":"pGh73mK93nnb",
+            "password2":"pGh73mK93nnb",
+        }
+
+        form = SignUpForm(data=data)
+        form.save()
+        user = User.objects.get(username=data["username"]) or None
+        self.assertIsInstance(user, User)
+    
 
 class ProfileFormTest(TestCase):
 
@@ -76,6 +91,15 @@ class ProfileFormTest(TestCase):
         form = ProfileForm(instance=self.profile, data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertRaises(ValidationError)
+
+    """
+    def test_form_raises_validation_error_profile_pic_is_not_JPEG_or_PNG_filetype(self):
+        self.form_data["profile_pic"] = "./test_pictures/test_text_file"
+        form = ProfileForm(instance=self.profile, data=self.form_data)
+        form.clean_profile_pic()
+        self.assertFalse(form.is_valid())
+    """
+    
 
 
 # Delete the below later

@@ -18,14 +18,14 @@ class Profile(models.Model):
     country = CountryField(null=True, blank=True)
     profile_pic = models.ImageField(
         upload_to="profile_pictures", 
-        null=True, 
+        null=True,
         blank=True,
         max_length=100
     )
     receive_email = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
     def clean(self):
         if len(self.address1) > 100:
@@ -45,7 +45,7 @@ class Profile(models.Model):
                 test_list.append(country[0].lower()) # extract the country name from tuples
             if str(self.country).lower() not in test_list:
                 raise ValidationError("This is not a valid country", code="invalid_country")
-            
+
 
 # from Simple Is Better Than Complex
 # https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
