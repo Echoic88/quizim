@@ -16,7 +16,6 @@ class QuizTest(TestCase):
         self.quiz = Quiz(
             quiz_name = "test_quiz",
             creator = self.user,
-            instances_played = 5
         )
 
 
@@ -25,9 +24,9 @@ class QuizTest(TestCase):
 
         self.assertEqual(self.quiz.quiz_name, "test_quiz")
         self.assertEqual(self.quiz.creator, self.user)
-        self.assertEqual(self.quiz.instances_played, 5)
         self.assertIsInstance(self.quiz, Quiz)
         self.assertIsInstance(self.quiz.creator, User)
+        self.assertEqual(self.quiz.instances_played, 0) # default is 0
 
     
     def test_timestamp_is_now_when_quiz_is_saved(self):

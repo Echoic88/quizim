@@ -13,7 +13,7 @@ class Quiz(models.Model):
     quiz_name = models.CharField(max_length=100, blank=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     created_date = models.DateTimeField(auto_now_add=True)
-    instances_played = models.IntegerField(null=True, blank=True)
+    instances_played = models.IntegerField(null=True, blank=True, default=0)
 
 
     def __str__(self):
@@ -24,14 +24,14 @@ class Quiz(models.Model):
         if self.quiz_name == "" or self.quiz_name is None:
             raise ValidationError("Quiz name is required", code="name_required")
         if len(self.quiz_name) > 100:
-            raise ValidationError("Quiz name is too long (100 characters maximum", code="name_too_long")
+            raise ValidationError("Quiz name is too long - 100 characters maximum", code="name_too_long")
 
 
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    question = models.CharField(max_length=100)
+    question = models.CharField(max_length=100, blank=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
-    correct_answer = models.CharField(max_length=100)
+    correct_answer = models.CharField(max_length=100, blank=True)
 
 
     # Overide save method so that CreateQuestiopnFormset and EditQuestionFormset 
