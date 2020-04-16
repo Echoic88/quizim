@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-#import env
+import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_countries',
     'accounts',
     'home',
+    'quiz',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'accounts.contexts.sitewide_login_form',
             ],
         },
     },
@@ -152,5 +154,6 @@ EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 465
+DEFAULT_FROM_EMAIL = "quizm4project@gmail.com"
 
 LOGIN_URL = "/"

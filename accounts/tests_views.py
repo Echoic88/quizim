@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
 from django.contrib.messages import get_messages
 from .forms import SignUpForm 
 
@@ -14,6 +15,7 @@ class SignUpViewTest(TestCase):
     def setUp(self):
         self.signup_data = {
             "username":"testuser",
+            "email":"emailxyz@xy.zy",
             "password1":"12Pass90",
             "password2":"12Pass90"
         }
@@ -25,10 +27,10 @@ class SignUpViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-    def test_data_posted_through_form_redirects_to_registration_success_on_complete(self):
+    def test_data_posted_through_form_redirects_to_registration_pending_on_complete(self):
         response = self.client.post(reverse("accounts:signup"), data=self.signup_data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("accounts:signup_success"))
+        self.assertRedirects(response, reverse("accounts:signup_pending"))
 
 
     def test_valid_data_posted_creates_a_User(self):
@@ -69,9 +71,23 @@ class SignUpViewTest(TestCase):
         self.assertFalse(user.is_active)
 
 
-class SignUpSuccessViewTest(TestCase):
-    def test_view_display_correct_page(self):
+class SignUpPendingTest(TestCase):
+    def test_signup_pending_view_displays_correct_page(self):
         client = Client()
-        response = client.get(reverse("accounts:signup_success"))
-        self.assertTemplateUsed(response, template_name="accounts/signup-success.html")
+        response = client.get(reverse("accounts:signup_pending"))
+        self.assertTemplateUsed(response, template_name="accounts/signup-pending.html")
         self.assertEqual(response.status_code, 200)
+
+
+"""
+class SignInTest(TestCase):
+    client = Client()
+    response = client.get(reverse("accounts:sigin"))
+    self.assertTemplateUsed
+"""
+
+class SignOutTest(TestCase):
+    def test_signout_logs_user_out_and_return_to_home_page(self):
+        client = Client()
+        response = client.get(reverse("accounts:signout"))
+        self.assertRedirects(response, reverse("home:index"))

@@ -10,7 +10,12 @@ class SignUpForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ["username", "password1", "password2"]
+        fields = ["username", "email", "password1", "password2"]
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields["email"].required = True
+
 
 
 class ProfileForm(forms.ModelForm):
@@ -26,9 +31,8 @@ class ProfileForm(forms.ModelForm):
             "profile_pic",
             "receive_email"
         ]
-        labels = {
-            "profile_pic":"Profile Picture (JPEG or PNG)"
-        }
+        
         widgets = {
             "country":CountrySelectWidget()
         }
+        

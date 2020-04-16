@@ -6,9 +6,11 @@ from .forms import ProfileForm, SignUpForm
 
 
 class SignUpFormTest(TestCase):
+
     def test_signup_form_saves_user_when_there_is_valid_data(self):
         data = {
             "username":"test1234",
+            "email":"testmail@mailtest.zy",
             "password1":"pGh73mK93nnb",
             "password2":"pGh73mK93nnb",
         }
@@ -17,6 +19,21 @@ class SignUpFormTest(TestCase):
         form.save()
         user = User.objects.get(username=data["username"]) or None
         self.assertIsInstance(user, User)
+
+
+    def test_signup_raises_ValidationError_if_no_email(self):
+        data = {
+            "username":"test1234",
+            "email":"",
+            "password1":"pGh73mK93nnb",
+            "password2":"pGh73mK93nnb",
+        }
+
+        form = SignUpForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors["email"], ["This field is required.",])
+
+
     
 
 class ProfileFormTest(TestCase):
@@ -43,7 +60,7 @@ class ProfileFormTest(TestCase):
             "address2":"test",
             "city":"test",
             "postcode":"1234abc",
-            #below is a valid country code for use with django-countries
+            #IE is a valid country code for use with django-countries
             "country":"IE", 
             "profile_pic":"./test_pictures/test_pic.jpg",
             "receive_email":True,
@@ -91,41 +108,3 @@ class ProfileFormTest(TestCase):
         form = ProfileForm(instance=self.profile, data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertRaises(ValidationError)
-
-    """
-    def test_form_raises_validation_error_profile_pic_is_not_JPEG_or_PNG_filetype(self):
-        self.form_data["profile_pic"] = "./test_pictures/test_text_file"
-        form = ProfileForm(instance=self.profile, data=self.form_data)
-        form.clean_profile_pic()
-        self.assertFalse(form.is_valid())
-    """
-    
-
-
-# Delete the below later
-"""
-    def test_form_is_valid_with_expected_valid_data2(self):
-        # When a new User is saved a corresponding Profile
-        # is created
-        user =  User(
-            username="test1",
-            password="12Pass90"
-        )
-        user.save()
-        profile = Profile.objects.get(user=user)
-
-        form_data = {
-            "address1":"x"*101,
-            "address2":"test",
-            "city":"test",
-            "postcode":"1234abc",
-            #below is a valid country code for use with django-countries
-            "country":"IE", 
-            "profile_pic":"./test_pictures/test_pic.jpg",
-            "receive_email":True,
-        }
-
-        form = ProfileForm(instance=profile, data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertRaises(ValidationError)
-"""

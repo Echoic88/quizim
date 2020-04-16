@@ -52,7 +52,8 @@ class ProfileTest(TestCase):
         self.assertEqual(profile.postcode, "12345")
         self.assertEqual(profile.country, "Ireland")
         self.assertEqual(profile.profile_pic, "./test_pictures/test_pic.jpg")
-        self.assertEqual(profile.receive_email, False)
+        self.assertEqual(profile.email_confirmed, False) #default to False
+        self.assertEqual(profile.receive_email, False) #default to False
 
 
     def test_instance_is_valid_if_non_required_fields_are_omitted(self):
@@ -73,7 +74,8 @@ class ProfileTest(TestCase):
         self.assertEqual(profile.postcode, "")
         self.assertEqual(profile.country, "")
         self.assertEqual(profile.profile_pic, "")
-        self.assertEqual(profile.receive_email, False) #default to False
+        self.assertEqual(profile.receive_email, False)
+        self.assertEqual(profile.email_confirmed, False)
         self.assertIsInstance(profile, Profile)
 
 

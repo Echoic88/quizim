@@ -22,6 +22,7 @@ class Profile(models.Model):
         blank=True,
         max_length=100
     )
+    email_confirmed = models.BooleanField(default=False)
     receive_email = models.BooleanField(default=False)
 
     def __str__(self):
