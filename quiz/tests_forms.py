@@ -3,7 +3,8 @@ from django.utils.timezone import localtime, now
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Quiz, Question, PlayerAnswer
-from .forms import QuizForm, QuestionForm
+from .forms import QuizForm, QuestionForm, CreateQuestionModelFormSet, EditQuestionModelFormSet, PlayerAnswerModelFormSet
+import uuid
 
 
 class QuizFormTest(TestCase):
@@ -70,7 +71,9 @@ class QuestionFormTest(TestCase):
 
 
     def test_question_saves_with_expected_valid_data(self):
-        form = QuestionForm(data=self.question_data)
+        print(self.quiz)
+        form = QuestionForm(data=self.question_data)    
+        
         f = form.save(commit=False)
         f.quiz = self.quiz
         f.save()
@@ -142,3 +145,67 @@ class QuestionFormTest(TestCase):
 
         self.assertTrue(form.is_valid())
         self.assertFalse(question_exists)
+
+
+class CreateQuestionModelFormSetTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(
+            username="test_user",
+            password="12Pass90"
+        )
+
+        self.quiz = Quiz.objects.create(
+            quiz_name="test_quiz",
+            creator = self.user
+        )
+
+        self.formset_data = {
+            "form-TOTAL_FORMS": "3",
+            "form-INITIAL_FORMS": "0",
+            "form-MAX_NUM_FORMS": "",
+            "form-0-question": "x"*100,
+            "form-0-correct_answer":"x"*100,
+            "form-1-question": "y"*100,
+            "form-1-correct_answer":"y"*100,
+            "form-2-question": "z"*100,
+            "form-2-correct_answer":"z"*100,
+        }
+
+
+    def test_formset_is_valid_with_expected_valid_data(self):
+        formset = CreateQuestionModelFormSet(data=self.formset_data)
+
+        self.assertTrue(formset.is_valid())
+        
+
+class EditQuestionModelFormSetTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(
+            username="test_user",
+            password="12Pass90"
+        )
+
+        self.quiz = Quiz.objects.create(
+            quiz_name="test_quiz",
+            creator = self.user
+        )
+
+        self.formset_data = {
+            "form-TOTAL_FORMS": "3",
+            "form-INITIAL_FORMS": "0",
+            "form-MAX_NUM_FORMS": "",
+            "form-0-question": "x"*100,
+            "form-0-correct_answer":"x"*100,
+            "form-1-question": "y"*100,
+            "form-1-correct_answer":"y"*100,
+            "form-2-question": "z"*100,
+            "form-2-correct_answer":"z"*100,
+        }
+
+
+    def test_formset_is_valid_with_expected_valid_data(self):
+        formset = EditQuestionModelFormSet(data=self.formset_data)
+        
+        self.assertTrue(formset.is_valid())

@@ -32,7 +32,7 @@ CreateQuestionModelFormSet = modelformset_factory(
 )
 
 
-EditQuestionFormSet = modelformset_factory(
+EditQuestionModelFormSet = modelformset_factory(
     Question,
     fields = ["question","correct_answer"],
     extra = 0,
@@ -52,7 +52,7 @@ EditQuestionFormSet = modelformset_factory(
 
 PlayerAnswerModelFormSet = modelformset_factory(
     PlayerAnswer,
-    fields=('question','player_answer',),
+    fields=("question","player_answer",),
     extra=0,
     widgets={
         "question": forms.TextInput(attrs={
@@ -65,3 +65,4 @@ PlayerAnswerModelFormSet = modelformset_factory(
         })
     }
 )
+

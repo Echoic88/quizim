@@ -17,7 +17,7 @@ class Quiz(models.Model):
 
 
     def __str__(self):
-        return f"{self.id}:{self.quiz}"
+        return f"{self.id}:{self.quiz_name}"
 
 
     def clean(self):
@@ -34,7 +34,7 @@ class Question(models.Model):
     correct_answer = models.CharField(max_length=100, blank=True)
 
 
-    # Overide save method so that CreateQuestiopnFormset and EditQuestionFormset 
+    # Overide save method so that CreateQuestionFormset and EditQuestionFormset 
     # rows with no question are not saved these will not be valid entries. 
     # Implemented like this rather than making question field required
     # as there will always be at least one blank row in the formset for 
@@ -46,7 +46,7 @@ class Question(models.Model):
 
 
     def __str__(self):
-        f"{self.quiz.quiz_name}:{self.question}"
+        return f"{self.quiz.quiz_name}:{self.question}"
 
 
     def clean_question(self):
@@ -61,9 +61,9 @@ class Question(models.Model):
 
 class PlayerAnswer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="quizes")
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="questions")
     player_answer = models.CharField(max_length=100)
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
     correct = models.BooleanField(default=False)
     submitted_date = models.DateTimeField(auto_now=True)
 

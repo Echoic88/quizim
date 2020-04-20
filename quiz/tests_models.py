@@ -43,7 +43,7 @@ class QuizTest(TestCase):
     
     def test_raise_validation_error_if_quiz_name_greater_than_100_characters(self):
         self.quiz.quiz_name = "x"*101
-        with self.assertRaisesMessage(ValidationError, "Quiz name is too long (100 characters maximum"):
+        with self.assertRaisesMessage(ValidationError, "Quiz name is too long - 100 characters maximum"):
             self.quiz.clean()
 
 
@@ -121,6 +121,11 @@ class PlayerAnswerTest(TestCase):
             password = "1290abyz"
         )
 
+        self.player = User.objects.create(
+            username = "test_player",
+            password = "1290abyz"
+        )
+
         self.quiz = Quiz.objects.create(
             quiz_name = "test_quiz",
             creator = self.user,
@@ -134,8 +139,8 @@ class PlayerAnswerTest(TestCase):
         )
 
         self.answer_data = {
-            "quiz":self.quiz,
             "question":self.question,
+            "player":self.player,
             "player_answer":"test_player_answer",
         }
 
@@ -144,10 +149,10 @@ class PlayerAnswerTest(TestCase):
         player_answer = PlayerAnswer(**self.answer_data)
         player_answer.save()
 
-        self.assertEqual(player_answer.quiz, self.quiz)
-        self.assertIsInstance(player_answer.quiz, Quiz)
         self.assertEqual(player_answer.question, self.question)
         self.assertIsInstance(player_answer.question, Question)
+        self.assertEqual(player_answer.player, self.player)
+        self.assertIsInstance(player_answer.player, User)
         self.assertEqual(player_answer.player_answer, "test_player_answer")
         self.assertFalse(player_answer.correct) # default is False
 

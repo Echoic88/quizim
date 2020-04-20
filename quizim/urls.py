@@ -20,10 +20,12 @@ from django.conf import settings
 from home.views import index
 from home import urls as urls_index
 from accounts import urls as urls_accounts
+from quiz import urls as urls_quiz
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index),
     path('accounts/', include(urls_accounts)),
-    path("home/", include(urls_index))
+    path("home/", include(urls_index)),
+    path("quiz/", include(urls_quiz)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

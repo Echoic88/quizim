@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h1>Play Quiz</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form action="{% url 'quiz:play_quiz' quiz.id %}" method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            {{ formset }}
+
+            {% comment %}
+            {% for form in formset %}
+            <div
+                class="question-form input-group ">
+                {{ form.id }}
+                <div class="question-form-field">
+                    {{ form.question }}
+                </div>
+                <div class="question-form-field">
+                    {{ form.player_answer }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endcomment %}
+            <button type="submit" class="btn btn-success btn-block my-5">Save Quiz</button>
+        </form>
+    </div>
+</div>
+
+{% comment %}
+<div class="border border-dark p-3">
+    <p>{{ quiz }}</p>
+    <p>{{ quiz.quiz_name }}</p>
+    <p>{{ quiz.created_date }}</p>
+</div>
+{% endcomment %}
+
+<div class="border border-dark p-3">
+    {% for question in questions %}
+        <p>{{ question }}</p>
+        <p>{{ question.question }}</p>
+        <p>{{ question.correct_answer }}</p>
+        <p>{{ question.quiz }}</p>
+        <hr class="border border-dark">
+    {% endfor %}
+</div>
+
+
+{% endblock %}

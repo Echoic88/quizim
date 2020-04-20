@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h1>Questions</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form action="{% url 'quiz:edit_quiz' quiz.id %}" method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="question-form input-group d-flex flex-column flex-md-row align-items-center justify-content-md-around">
+                    {{ form.id }}
+                    <div class="question-form-field">
+                        {{ form.question }}
+                    </div>
+                    <div class="question-form-field">
+                        {{ form.correct_answer }}
+                    </div>
+                    <div class="question-btn">
+                        {{ form.DELETE }}
+                        <button type="button" class="btn btn-success add-form-row">+</button>
+                        <button type="button" class="btn btn-danger delete-form-row edit-page-delete-form-row">-</button>
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success btn-block my-3">Save Quiz</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'quiz/js/questions.js' %}"></script>
+{% endblock %}
