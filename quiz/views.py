@@ -33,6 +33,7 @@ def create_quiz(request):
         if questions_formset.is_valid():
             for form in questions_formset:
                 f = form.save(commit=False)
+                f.id = uuid.uuid4()
                 f.quiz = q
                 f.save()
 
@@ -97,3 +98,5 @@ def edit_quiz(request, id):
         "quiz":quiz,
         "formset": formset
     })
+
+
