@@ -69,7 +69,7 @@ class PlayerAnswer(models.Model):
 
 
     def __str__(self):
-        return f"{self.id}:{self.question.id}:{self.question.question}:{self.player_answer}"
+        return f"{self.id}:{self.question.question}:{self.player_answer}:{self.question.correct_answer}"
 
 
     def clean_player_answer(self):
@@ -80,7 +80,7 @@ class PlayerAnswer(models.Model):
 @receiver(pre_save, sender=PlayerAnswer)
 def create_user_profile(sender, instance, *args, **kwargs):
     # use format_answer function to standardise the player answer and correct answer
-    # before comparison.  
+    # before comparison. If the comparison matches mark the player question as correct
     if format_answer(instance.player_answer) == format_answer(instance.question.correct_answer):
         instance.correct = True
         

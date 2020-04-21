@@ -100,3 +100,45 @@ def edit_quiz(request, id):
     })
 
 
+def play_quiz(request, id):
+    """
+    Play a quiz
+    """
+    quiz = Quiz.objects.get(id=id)
+    questions = Question.objects.filter(quiz=quiz)
+
+    if request.method == "POST":
+
+        formset = PlayerAnswerModelFormSet(
+            request.POST,
+            queryset=questions
+        )
+        for form in formset:
+            question = questions.get(question=form["question"].value())
+
+            answer = PlayerAnswer(
+                question=question,
+                player_answer=form["player_answer"].value(),
+                player=request.user
+            )
+            answer.save()            
+
+        return redirect(reverse("quiz:index"))
+        #return redirect("quiz:quiz_result", id=quiz.id)
+        
+    else:
+        formset = PlayerAnswerModelFormSet(
+            queryset=questions
+        )
+
+        # Delete this
+        for form in formset:
+            q = questions.get(question=form["question"].value())
+            #print(q.id)
+
+
+        return render(request, "quiz/play-quiz.html", {
+            "quiz":quiz,
+            "questions":questions,
+            "formset":formset
+        })

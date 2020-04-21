@@ -56,7 +56,7 @@ PlayerAnswerModelFormSet = modelformset_factory(
     fields=("question","player_answer",),
     extra=0,
     widgets={
-        "question": forms.TextInput(attrs={
+        "question": forms.HiddenInput(attrs={
         "class": "form-control",
         "readonly":True
         }),
@@ -66,4 +66,3 @@ PlayerAnswerModelFormSet = modelformset_factory(
         })
     }
 )
-

@@ -7,50 +7,28 @@
         <h1>Play Quiz</h1>
     </div>
 </div>
+
 <div class="row">
-    <div class="col">
+    <div class="col-6">
         <form action="{% url 'quiz:play_quiz' quiz.id %}" method="POST">
             {% csrf_token %}
             {{ formset.management_form }}
-
-            {{ formset }}
-
-            {% comment %}
             {% for form in formset %}
-            <div
-                class="question-form input-group ">
-                {{ form.id }}
-                <div class="question-form-field">
-                    {{ form.question }}
+                <div class="question-form input-group">
+                    <div class="question-form-field col-6">
+                        {{ form.question.value}}
+                    </div>
+                    <div class="question-form-field">
+                        {{ form.question }}
+                    </div>
+                    <div class="question-form-field col-6">
+                        {{ form.player_answer }}
+                    </div>
                 </div>
-                <div class="question-form-field">
-                    {{ form.player_answer }}
-                </div>
-            </div>
             {% endfor %}
-            {% endcomment %}
-            <button type="submit" class="btn btn-success btn-block my-5">Save Quiz</button>
+            <button type="submit" class="btn btn-success btn-block my-5">Save Answers</button>
         </form>
     </div>
 </div>
-
-{% comment %}
-<div class="border border-dark p-3">
-    <p>{{ quiz }}</p>
-    <p>{{ quiz.quiz_name }}</p>
-    <p>{{ quiz.created_date }}</p>
-</div>
-{% endcomment %}
-
-<div class="border border-dark p-3">
-    {% for question in questions %}
-        <p>{{ question }}</p>
-        <p>{{ question.question }}</p>
-        <p>{{ question.correct_answer }}</p>
-        <p>{{ question.quiz }}</p>
-        <hr class="border border-dark">
-    {% endfor %}
-</div>
-
 
 {% endblock %}
