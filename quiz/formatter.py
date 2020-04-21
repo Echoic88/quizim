@@ -12,7 +12,7 @@ def format_answer(text):
     # https://stackoverflow.com/questions/6531482/how-to-check-if-a-string-contains-an-element-from-a-list-in-
     # https://stackoverflow.com/questions/12883376/remove-the-first-word-in-a-python-string
     
-    article_words = ("the", "a", "an") # this is messy having the spaces - try to fix this
+    article_words = ("the ", "a ", "an ")
     lower_and_strip = text.strip().lower() 
     
     if lower_and_strip.startswith(article_words) and lower_and_strip not in article_words:
