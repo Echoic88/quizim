@@ -12,6 +12,7 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ["question", "correct_answer"]
+        widgets = {"DELETE":forms.HiddenInput}
 
 
 CreateQuestionModelFormSet = modelformset_factory(
@@ -45,7 +46,7 @@ EditQuestionModelFormSet = modelformset_factory(
         "correct_answer": forms.TextInput(attrs={
         "class": "form-control",
         "placeholder": "Enter answer here"
-        })
+        }),
     }
 )
 

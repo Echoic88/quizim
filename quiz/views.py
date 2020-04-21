@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSet, PlayerAnswerModelFormSet
 from .models import Question, Quiz, PlayerAnswer
 from django.contrib.auth.models import User
+import uuid
 
 
 # Create your views here.
@@ -29,7 +30,6 @@ def create_quiz(request):
              q.creator = request.user
              q.save()
 
-        
         if questions_formset.is_valid():
             for form in questions_formset:
                 f = form.save(commit=False)
@@ -41,10 +41,59 @@ def create_quiz(request):
 
     else:
         quiz_form = QuizForm()
-        questions_formset = CreateQuestionModelFormSet()
-    
+        questions_formset = CreateQuestionModelFormSet(queryset = Question.objects.none())
+        
     return render(request, "quiz/create-quiz.html", {
         "quiz_form":quiz_form,
         "questions_formset":questions_formset
     })
     
+
+def edit_quiz(request, id):
+    """
+    Edit an existing quiz
+    """
+    quiz = Quiz.objects.get(id=id)
+    questions = Question.objects.filter(quiz=quiz)
+
+    if request.method == 'POST':
+        formset = EditQuestionModelFormSet(
+            request.POST,
+            queryset=questions
+            )
+
+        if formset.is_valid():
+
+            for form in formset:
+                if form.is_valid():
+                    f = form.save(commit=False)
+                    f.quiz = quiz
+                    if Question.objects.filter(id=f.id).exists():
+                        f.save()
+                    else:
+                        f.id = uuid.uuid4()
+                        f.save()
+                    
+                else:
+                    print("form is not valid")
+
+            formset.save(commit=False)
+            for object in formset.deleted_objects:
+                object.delete()
+
+            return redirect(reverse("quiz:index")) 
+
+        else:
+            print(formset.errors)
+            return redirect(reverse("quiz:index")) 
+
+
+    else:
+        formset = EditQuestionModelFormSet(
+            queryset=questions
+            )
+
+    return render(request, "quiz/edit-quiz.html", {
+        "quiz":quiz,
+        "formset": formset
+    })

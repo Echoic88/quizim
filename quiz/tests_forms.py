@@ -71,7 +71,6 @@ class QuestionFormTest(TestCase):
 
 
     def test_question_saves_with_expected_valid_data(self):
-        print(self.quiz)
         form = QuestionForm(data=self.question_data)    
         
         f = form.save(commit=False)

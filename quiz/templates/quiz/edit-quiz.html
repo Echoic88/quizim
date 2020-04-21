@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -13,8 +16,8 @@
             {% csrf_token %}
             {{ formset.management_form }}
             {% for form in formset %}
-                <div class="question-form input-group d-flex flex-column flex-md-row align-items-center justify-content-md-around">
-                    {{ form.id }}
+
+            <div class="question-form input-group">
                     <div class="question-form-field">
                         {{ form.question }}
                     </div>

@@ -66,16 +66,14 @@ $(document).ready(function () {
     // submitted to server to allow for delete from database
     function editPageDeleteQuestionRow() {
         // add request to delete to management form data
-        $(this).siblings("input[type=checkbox]")
-            .prop("checked", true)
+        $(this)
+            .siblings("input[type=checkbox]").prop("checked", true)
             .closest(".question-form").children().hide();
 
         //Focus the Question field of the last rows
         $(".question-form:last").find("input:first").focus()
     }
 
-
-    
     // call functions
     // When the page loads on the create and edit quiz pages the last row will have
     // a plus button to add a question and other rows should have a minus button to remove

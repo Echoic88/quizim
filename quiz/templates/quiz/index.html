@@ -13,6 +13,8 @@
             <div class="quiz-block">
                 <h3>{{ quiz.quiz_name }}</h3>
                 <p>Created by: {{ quiz.creator }}</p>
+                {{quiz.id}}
+                <a href="{% url 'quiz:edit_quiz' quiz.id %}">Edit</a>
             </div>
             {% endfor %}
         {% else %}

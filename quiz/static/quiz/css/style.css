@@ -1,0 +1,5 @@
+
+/* Edit question formset - hide the DELETE checkbox */
+.question-btn input  {
+    display:none;
+}
