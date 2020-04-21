@@ -123,8 +123,7 @@ def play_quiz(request, id):
             )
             answer.save()            
 
-        return redirect(reverse("quiz:index"))
-        #return redirect("quiz:quiz_result", id=quiz.id)
+        return redirect("quiz:quiz_result", id=quiz.id)
         
     else:
         formset = PlayerAnswerModelFormSet(
@@ -134,11 +133,37 @@ def play_quiz(request, id):
         # Delete this
         for form in formset:
             q = questions.get(question=form["question"].value())
-            #print(q.id)
-
 
         return render(request, "quiz/play-quiz.html", {
             "quiz":quiz,
             "questions":questions,
             "formset":formset
         })
+
+
+def quiz_result(request, id):
+    """
+    Return the results of a quiz to the player with correct answers
+    """
+    questions = Question.objects.filter(quiz=id)
+    player_answers = PlayerAnswer.objects.filter(question__quiz=id).values("question", "player_answer", "correct")
+    
+    results=[]
+
+    for question in questions:
+        correct_answer = question.correct_answer
+        player_answer_dict = player_answers.get(question = question.id)
+        player_answer = player_answer_dict["player_answer"]
+        correct = player_answer_dict["correct"]
+
+        result = {
+            "question":question.question,
+            "correct_answer":correct_answer,
+            "player_answer":player_answer,
+            "correct": correct
+        }
+
+        results.append(result)
+
+    return render(request, "quiz/quiz-result.html", {"results":results})
+

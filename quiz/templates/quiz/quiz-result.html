@@ -8,20 +8,26 @@
 
 <div class="row">
     <div class="col">
-        {% for result in results %}
-        <div class="border border-dark p-3 m-5">
-            <div>Question: {{ result.question }}</div>
-            <div>
-                <p>Answer: {{ result.correct_answer }}</p>
-                <p>Player: {{ result.player_answer }}</p>
+        <table class="table">
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Your Answer</th>
+                <th>Correct?</th>
+            </tr>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.question }}</td>
+                <td>{{ result.player_answer }}</td>
+                <td>{{ result.correct_answer }}</td>
                 {% if result.correct %}
-                    <p>You're Right!!!</p>
+                <td>You're Right!!!</td>
                 {% else %}
-                    <p>Didn't get this one :-(</p>
+                <td>Didn't get this one :-(</td>
                 {% endif %}
-            </div>
-        </div>
-        {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 

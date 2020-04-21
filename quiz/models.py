@@ -67,6 +67,9 @@ class PlayerAnswer(models.Model):
     correct = models.BooleanField(default=False)
     submitted_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-submitted_date"]
+        get_latest_by = ["submitted_date"]
 
     def __str__(self):
         return f"{self.id}:{self.question.question}:{self.player_answer}:{self.question.correct_answer}"

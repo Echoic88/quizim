@@ -2,7 +2,7 @@ from django.test import TestCase, Client, RequestFactory
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from .models import Quiz, Question
-from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSet
+from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSet, PlayerAnswerModelFormSet
 from .views import create_quiz
 import uuid
 
@@ -15,6 +15,7 @@ class CreateQuizViewTest(TestCase):
             username="test_user",
             password="12Pass90"
         )
+
 
     def test_get_response_returns_correct_template(self):
         response = self.client.get(reverse("quiz:create_quiz"))
@@ -67,14 +68,6 @@ class EditQuizViewTest(TestCase):
 
 
     def test_get_response_returns_correct_template(self):
-        print(self.questions)
-        response = self.client.get(reverse("quiz:edit_quiz", args=[self.quiz.id]))
-        
-        self.assertTemplateUsed(response, template_name="quiz/edit-quiz.html")
-        self.assertEqual(response.status_code, 200)
-
-
-    def test_get_response_returns_correct_template(self):
         response = self.client.get(reverse("quiz:edit_quiz", args=[self.quiz.id]))
         
         self.assertTemplateUsed(response, template_name="quiz/edit-quiz.html")
@@ -86,3 +79,51 @@ class EditQuizViewTest(TestCase):
 
         formset = response.context["formset"]
         self.assertIsInstance(formset, EditQuestionModelFormSet)
+
+
+class PlayQuizViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.user = User.objects.create(
+            username="test_user",
+            password="12Pass90"
+        )
+        cls.quiz = Quiz.objects.create(
+            quiz_name="test_quiz",
+            creator=cls.user
+        )
+        cls.questions = Question.objects.bulk_create([
+            Question(
+                id = uuid.uuid4(),
+                question="question1",
+                correct_answer="answer1",
+                quiz=cls.quiz
+            ),
+            Question(
+                id = uuid.uuid4(),
+                question="question2",
+                correct_answer="answer2",
+                quiz=cls.quiz
+            ),
+            Question(
+                id = uuid.uuid4(),
+                question="question3",
+                correct_answer="answer3",
+                quiz=cls.quiz
+            )
+        ])
+
+
+    def test_get_response_returns_correct_template(self):
+        response = self.client.get(reverse("quiz:play_quiz", args=[self.quiz.id]))
+        
+        self.assertTemplateUsed(response, template_name="quiz/play-quiz.html")
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_get_response_returns_play_questions_formset(self):
+        response = self.client.get(reverse("quiz:play_quiz", args=[self.quiz.id]))
+
+        formset = response.context["formset"]
+        self.assertIsInstance(formset, PlayerAnswerModelFormSet)
