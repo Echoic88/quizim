@@ -21,6 +21,7 @@ from home.views import index
 from home import urls as urls_index
 from accounts import urls as urls_accounts
 from quiz import urls as urls_quiz
+from userarea import urls as urls_userarea
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,5 @@ urlpatterns = [
     path('accounts/', include(urls_accounts)),
     path("home/", include(urls_index)),
     path("quiz/", include(urls_quiz)),
+    path("userarea/", include(urls_userarea)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

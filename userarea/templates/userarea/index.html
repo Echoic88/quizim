@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'userarea/css/style.css' %}">
+{% endblock %}
+{% block title %}User Area{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <h1>User Area</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h2>Your Details</h2>
+        <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <div class="profile-image-container">
+                <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" class="profile-image">
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
