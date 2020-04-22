@@ -16,6 +16,7 @@
         <h2>Your Details</h2>
         <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            {{ user_form.as_p }}
             {{ profile_form.as_p }}
             <div class="profile-image-container">
                 <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" class="profile-image">
