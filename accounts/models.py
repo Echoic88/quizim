@@ -55,4 +55,13 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-        
+
+
+#Modified from Stack Overflow
+#https://stackoverflow.com/questions/19287719/remove-previous-image-from-media-folder-when-imagefiled-entry-modified-in-django
+@receiver(pre_save, sender=Profile)
+def delete_old_image(sender, instance, *args, **kwargs):
+    if instance.pk:
+        existing_image=Profile.objects.get(pk=instance.pk)
+        if instance.profile_pic and existing_image.profile_pic != instance.profile_pic:
+            existing_image.profile_pic.delete(False)
