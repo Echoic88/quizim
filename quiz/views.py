@@ -146,7 +146,7 @@ def quiz_result(request, id):
     Return the results of a quiz to the player with correct answers
     """
     questions = Question.objects.filter(quiz=id)
-    player_answers = PlayerAnswer.objects.filter(question__quiz=id).values("question", "player_answer", "correct")
+    player_answers = PlayerAnswer.objects.filter(player=request.user, question__quiz=id).values("question", "player_answer", "correct")
     
     results=[]
 

@@ -46,7 +46,7 @@ class Question(models.Model):
 
 
     def __str__(self):
-        return f"{self.quiz.quiz_name}:{self.question}:{self.id}"
+        return f"{self.quiz.quiz_name}:{self.question}"
 
 
     def clean_question(self):
@@ -72,7 +72,7 @@ class PlayerAnswer(models.Model):
         get_latest_by = ["submitted_date"]
 
     def __str__(self):
-        return f"{self.id}:{self.question.question}:{self.player_answer}:{self.question.correct_answer}"
+        return f"{self.question.question}:{self.player_answer}:{self.question.correct_answer}:{self.player}"
 
 
     def clean_player_answer(self):
