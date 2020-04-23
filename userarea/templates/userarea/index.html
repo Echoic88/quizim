@@ -27,6 +27,21 @@
 </div>
 <div class="row">
     <div class="col border border-dark p-5 my-3">
+        <h2>Change Password</h2>
+        <form action="{% url 'userarea:change_password' %}" method="POST">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+            <button type="submit" class="btn btn-block btn-success">Change Password</button>
+        </form>
+        {% if messages %}
+        {% for message in messages %}
+            <p>Your password has been changed!</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col border border-dark p-5 my-3">
         {% if user_quizes %}
         <h2>Quizes you've created:</h2>
         <ul>
@@ -37,7 +52,6 @@
         {% else %}
         <h2>Looks like you haven't made any quizes :-(</h2>
         <a type="button" href="{% url 'quiz:create_quiz' %}" class="btn btn-primary">Create a quiz</a>
-
         {% endif %}
     </div>
 </div>
