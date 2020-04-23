@@ -27,12 +27,20 @@ class Quiz(models.Model):
             raise ValidationError("Quiz name is too long - 100 characters maximum", code="name_too_long")
 
 
+class PlayedQuiz(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    played_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.quiz}:{self.player}.{self.played_date}"
+
+
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4())
     question = models.CharField(max_length=100, blank=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
     correct_answer = models.CharField(max_length=100, blank=True)
-
 
     # Overide save method so that CreateQuestionFormset and EditQuestionFormset 
     # rows with no question are not saved these will not be valid entries. 
@@ -46,7 +54,7 @@ class Question(models.Model):
 
 
     def __str__(self):
-        return f"{self.quiz.quiz_name}:{self.question}"
+        return f"{self.quiz.quiz_name}:{self.quiz.creator.username}:{self.question}"
 
 
     def clean_question(self):
@@ -61,18 +69,14 @@ class Question(models.Model):
 
 class PlayerAnswer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="questions")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="playeranswers")
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     player_answer = models.CharField(max_length=100)
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     correct = models.BooleanField(default=False)
-    submitted_date = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ["-submitted_date"]
-        get_latest_by = ["submitted_date"]
 
     def __str__(self):
-        return f"{self.question.question}:{self.player_answer}:{self.question.correct_answer}:{self.player}"
+        return f"{self.question.quiz.quiz_name}:{self.question.question}:{self.player_answer}:{self.question.correct_answer}:{self.player}"
 
 
     def clean_player_answer(self):

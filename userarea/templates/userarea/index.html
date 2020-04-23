@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col">
+    <div class="col border border-dark p-5 my-3">
         <h2>Your Details</h2>
         <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -25,4 +25,35 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="col border border-dark p-5 my-3">
+        {% if user_quizes %}
+        <h2>Quizes you've created:</h2>
+        <ul>
+            {% for quiz in user_quizes %}
+            <li>{{ quiz.quiz_name }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h2>Looks like you haven't made any quizes :-(</h2>
+        <a type="button" href="{% url 'quiz:create_quiz' %}" class="btn btn-primary">Create a quiz</a>
+
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col border border-dark p-5 my-3">
+        {% if quizes_played %}
+        <h2>Quizes you've played:</h2>
+        <ul>
+            {% for quiz in quizes_played %}
+            <li>{{ quiz.quiz.quiz_name }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h2>Looks like you haven't played any quizes :-(</h2>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.timezone import localtime, now
-from .models import Quiz, Question, PlayerAnswer
+from .models import Quiz, PlayedQuiz, Question, PlayerAnswer
 
 
 # Create your tests here.
@@ -46,6 +46,38 @@ class QuizTest(TestCase):
         with self.assertRaisesMessage(ValidationError, "Quiz name is too long - 100 characters maximum"):
             self.quiz.clean()
 
+
+class PlayedQuizTest(TestCase):
+    def setUp(self):
+        self.quiz_creator = User.objects.create(
+            username="quiz_creator",
+            password="12Pass90"
+        )
+
+        self.player = User.objects.create(
+            username="test_user",
+            password="12Pass90"
+        )
+
+        self.quiz = Quiz.objects.create(
+            quiz_name="test_quiz",
+            creator=self.quiz_creator
+        )
+
+        self.played_quiz_data = {
+            "quiz":self.quiz,
+            "player":self.player
+        }
+
+
+    def test_saves_with_valid_expected_data(self):
+        played_quiz = PlayedQuiz(**self.played_quiz_data)
+        played_quiz.save()
+
+        self.assertIsInstance(played_quiz, PlayedQuiz)
+        self.assertIsInstance(played_quiz.quiz, Quiz)
+        self.assertIsInstance(played_quiz.player, User)
+        
 
 class QuestionTest(TestCase):
     def setUp(self):
@@ -141,6 +173,7 @@ class PlayerAnswerTest(TestCase):
         self.answer_data = {
             "question":self.question,
             "player":self.player,
+            "quiz":self.quiz,
             "player_answer":"test_player_answer",
         }
 

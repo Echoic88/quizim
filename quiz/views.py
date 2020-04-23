@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSet, PlayerAnswerModelFormSet
-from .models import Question, Quiz, PlayerAnswer
+from .models import Question, Quiz, PlayerAnswer, PlayedQuiz
 from django.contrib.auth.models import User
 import uuid
 
@@ -11,7 +11,7 @@ def index(request):
     """
     Temporary home page for testing quiz links
     """
-    quizes = Quiz.objects.all() or None
+    quizes = Quiz.objects.exclude(creator=request.user)
     return render(request, "quiz/index.html", {
         "quizes":quizes
     })
@@ -61,7 +61,7 @@ def edit_quiz(request, id):
         formset = EditQuestionModelFormSet(
             request.POST,
             queryset=questions
-            )
+        )
 
         if formset.is_valid():
 
@@ -92,7 +92,7 @@ def edit_quiz(request, id):
     else:
         formset = EditQuestionModelFormSet(
             queryset=questions
-            )
+        )
 
     return render(request, "quiz/edit-quiz.html", {
         "quiz":quiz,
@@ -108,23 +108,32 @@ def play_quiz(request, id):
     questions = Question.objects.filter(quiz=quiz)
 
     if request.method == "POST":
-
-        formset = PlayerAnswerModelFormSet(
-            request.POST,
-            queryset=questions
-        )
-        for form in formset:
-            question = questions.get(question=form["question"].value())
-
-            answer = PlayerAnswer(
-                question=question,
-                player_answer=form["player_answer"].value(),
-                player=request.user
+        try:
+            formset = PlayerAnswerModelFormSet(
+                request.POST,
+                queryset=questions
             )
-            answer.save()            
+            for form in formset:
+                question = questions.get(question=form["question"].value())
 
-        return redirect("quiz:quiz_result", id=quiz.id)
-        
+                answer = PlayerAnswer(
+                    question=question,
+                    player_answer=form["player_answer"].value(),
+                    quiz=quiz,
+                    player=request.user
+                )
+                answer.save()
+
+            PlayedQuiz.objects.create(
+                quiz=quiz,
+                player=request.user
+            )      
+
+            return redirect("quiz:quiz_result", id=quiz.id)
+
+        except:
+            print("Error saving Player Answers and Played Quiz")
+            
     else:
         formset = PlayerAnswerModelFormSet(
             queryset=questions
@@ -166,4 +175,3 @@ def quiz_result(request, id):
         results.append(result)
 
     return render(request, "quiz/quiz-result.html", {"results":results})
-
