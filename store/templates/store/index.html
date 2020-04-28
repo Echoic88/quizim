@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Store{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h1>Store</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {% for quiz in quizes %}
+        <div class="border border-dark m-5 p-3">
+            <h2>{{ quiz.quiz.quiz_name}}</h2>
+            {{ quiz.id }}
+            <p>Price: {{ quiz.price }}</p>
+            <a href="{% url 'cart:add_to_cart' quiz.id %}" class="btn btn-success" 
+                title="Add {{ quiz.quiz.quiz_name }} to cart">+</a>
+            <a href="{% url 'cart:remove_from_cart' quiz.id %}" class="btn btn-danger"
+                title="Remove {{ quiz.quiz.quiz_name }} to cart">-</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    <div class="row">
+        <div class="col">
+            <a href="{% url 'cart:view_cart' %}" class="btn btn-secondary btn-block">View Cart</a>
+        </div>
+    </div>
+
+{% endblock %}
