@@ -3,6 +3,7 @@ from django.shortcuts import reverse
 from .views import index
 
 
+"""
 class UserAreaIndexViewTest(TestCase):
 
     def test_get_response_returns_correct_template(self):
@@ -11,7 +12,7 @@ class UserAreaIndexViewTest(TestCase):
         self.assertTemplateUsed(response, template_name="userarea/index.html")
         self.assertEqual(response.status_code, 200)
 
-"""
+
     def test_get_response_returns_quiz_form_and_create_questions_formset(self):
         response = self.client.get(reverse("quiz:create_quiz"))
 
