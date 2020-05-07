@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from .formatter import format_answer
+from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 
 
@@ -89,10 +90,25 @@ class PlayerAnswer(models.Model):
 
 class PaidQuiz(models.Model):
     quiz = models.OneToOneField(Quiz, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(
+        max_digits=3, 
+        decimal_places=2, 
+        null=True, 
+        blank=True,
+        #set min value to 0.50 - Stripe minimum that can be charged
+        validators=[MinValueValidator(0.5)])
 
     def __str__(self):
         return f"{self.quiz.quiz_name}:{self.price}"
+
+
+class Order(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    purchase_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.quiz.quiz_name}:{self.customer.first_name} {self.customer.last_name}: {self.purchase_date}"
 
 
 @receiver(pre_save, sender=PlayerAnswer)

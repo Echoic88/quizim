@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Receipt</h1>
+            {% for product in context %}
+            <div class="border border-dark my-5">
+                <span>{{ product.product.quiz.quiz_name }}</span>
+                <span>{{ product.product.price }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

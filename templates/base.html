@@ -9,14 +9,14 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    {% block css %}{% endblock %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block css %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
   <header class="row">
-    <div class="col">
+    <div class="col-10">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -41,17 +41,26 @@
         </div>
       </nav>
     </div>
+    <div class="col-2 d-flex justify-content-center align-items-center">
+      <a href="{% url 'cart:view_cart' %}" class="header-cart">
+        <i class="fas fa-shopping-cart"></i>
+        {% if product_count %}
+        <span>({{ product_count }})</span>
+        <span>&euro;{{ total_price }}</span>
+        {% endif %}
+      </a>
+    </div>
   </header>
 
   <main>
     <div class="container">
       <div class="row">
         <div class="col">
-            {% if user.is_authenticated %}
-              <p>{{ user.username }}</p>
-            {% else %}
-              <p>Nobody logged in</p>
-            {% endif %}
+          {% if user.is_authenticated %}
+          <p>{{ user.username }}</p>
+          {% else %}
+          <p>Nobody logged in</p>
+          {% endif %}
         </div>
       </div>
       {% block content %}
@@ -74,4 +83,5 @@
 <script src="{% static 'js/script.js' %}"></script>
 {% block js %}
 {% endblock %}
+
 </html>

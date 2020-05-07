@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.timezone import localtime, now
-from .models import Quiz, PlayedQuiz, Question, PlayerAnswer
+from .models import Quiz, PlayedQuiz, Question, PlayerAnswer, PaidQuiz
 
 
 # Create your tests here.
@@ -224,4 +224,3 @@ class PlayerAnswerTest(TestCase):
         p = PlayerAnswer.objects.get(question=self.question)
 
         self.assertFalse(p.correct)
-        

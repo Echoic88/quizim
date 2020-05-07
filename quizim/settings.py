@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'userarea',
     'store',
     'cart',
+    'checkout',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,7 @@ EMAIL_PORT = 465
 DEFAULT_FROM_EMAIL = "quizm4project@gmail.com"
 
 LOGIN_URL = "/"
+
+# Stripe keys
+STRIPE_PUBLISHABLE = os.getenv("STRIPE_PUBLISHABLE")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")

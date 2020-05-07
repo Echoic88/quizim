@@ -24,14 +24,16 @@ from quiz import urls as urls_quiz
 from userarea import urls as urls_userarea
 from store import urls as urls_store
 from cart import urls as urls_cart
+from checkout import urls as urls_checkout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index),
-    path('accounts/', include(urls_accounts)),
+    path("accounts/", include(urls_accounts)),
     path("home/", include(urls_index)),
     path("quiz/", include(urls_quiz)),
     path("userarea/", include(urls_userarea)),
     path("store/", include(urls_store)),
     path("cart/", include(urls_cart)),
+    path("checkout/", include(urls_checkout)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'checkout/css/stripe_style.css' %}">{% endblock %}
+
+
+{% block content %}
+{{ stripe_context|json_script:"stripe_context" }}
+
+<div class="row d-flex justify-content-around">
+    <div class="col border border-dark">
+        <h2>Order</h2>
+        {% for cart_item in cart_context %}
+        <div class="d-block">
+            <h3>{{ cart_item.product.quiz.quiz_name }}</h3>
+            <p>Price: {{ cart_item.product.price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-6 border border-dark">
+        <h2>Payment Details</h2>
+        <form id="paymentDetailsForm">
+            {{ payment_details_form.as_p }}
+        </form>
+    </div>
+    <div class="col-6 border border-dark">
+        <h2>Card Details</h2>
+        <div id="card-error"></div>
+        <form id="paymentForm" action="{% url 'checkout:checkout' %}" method="POST">
+            <div id="cardNumber"></div>
+            <div id="cardExpiry"></div>
+            <div id="cardCvc"></div>
+            <div class="spinner-grow stripe-spinner" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div id="card-errors" role="alert">
+                <p id="stripe-error-message"></p>
+            </div>
+            <button type="submit" id="paymentButton" class="btn btn-success">Pay</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'checkout/js/stripe_client.js' %}"></script>
+{% endblock %}

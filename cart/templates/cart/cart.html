@@ -7,19 +7,18 @@
     </div>
 </div>
 <div class="row row-flex">
-    {% for cart_item in cart_context %}
     <div class="col border border-dark my-5 py-3">
-        <div class="d-block" >
+        {% for cart_item in cart_context %}
+        <div class="d-block">
             <h3>{{ cart_item.product.quiz.quiz_name }}</h3>
             <p>Price: {{ cart_item.product.price }}</p>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 <div class="row">
     <p>Total</p>
-    <p><span class="glyphicon glyphicon-euro" aria-hidden="true"></span>{{ total }}</p>
-    <a href="/" class="btn btn-success" role="button">Checkout</a>
+    <p>&euro;{{ total_price }}</p>
+    <a href="{% url 'checkout:checkout' %}" class="btn btn-success" role="button">Checkout</a>
 </div>
-
 {% endblock %}
