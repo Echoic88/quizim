@@ -27,6 +27,15 @@ def checkout(request):
         context = cart_contents(request)["cart_context"]
         user = User.objects.get(id=request.user.id)
 
+        for product in context:
+            print(product)
+            quiz=product["product"]
+            print(quiz.quiz)
+            Order.objects.create(
+                quiz=quiz.quiz,
+                customer=request.user
+            )
+
         subject = "Quizim Receipt"
         html_message = render_to_string("checkout/receipt-email.html", {"context":context})
         plain_message = strip_tags(html_message)

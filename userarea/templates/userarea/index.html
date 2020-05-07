@@ -69,5 +69,17 @@
         {% endif %}
     </div>
 </div>
+<div class="row">
+    <div class="col border border-dark p-5 my-3">
+        {% if quizes_purchased %}
+        <h2>Quizes you've bought:</h2>
+        <ul>
+            {% for quiz in quizes_purchased %}
+            <li>{{ quiz.quiz.quiz_name }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

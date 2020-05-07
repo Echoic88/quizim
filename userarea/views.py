@@ -6,7 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from accounts.models import Profile
 from accounts.forms import ProfileForm
-from quiz.models import Quiz, Question, PlayerAnswer, PlayedQuiz
+from quiz.models import Quiz, Question, PlayerAnswer, PlayedQuiz, Order
 from .forms import UserUpdateForm
 
 
@@ -20,6 +20,7 @@ def index(request):
     profile_form = ProfileForm(instance=request.user.profile)
     user_quizes = Quiz.objects.filter(creator=request.user)
     quizes_played = PlayedQuiz.objects.filter(player=request.user)
+    quizes_purchased = Order.objects.filter(customer=request.user)
     password_form = PasswordChangeForm(request.user)
 
     context = {
@@ -27,6 +28,7 @@ def index(request):
         "profile_form":profile_form,
         "user_quizes":user_quizes,
         "quizes_played":quizes_played,
+        "quizes_purchased":quizes_purchased,
         "password_form":password_form,
     }
 
