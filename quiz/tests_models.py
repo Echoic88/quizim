@@ -29,12 +29,6 @@ class QuizTest(TestCase):
         self.assertEqual(self.quiz.instances_played, 0) # default is 0
 
     
-    def test_timestamp_is_now_when_quiz_is_saved(self):
-        self.quiz.save()
-        time_now = localtime(now())
-        self.assertEqual(self.quiz.created_date, time_now)
-    
-
     def test_raise_validation_error_if_no_quiz_name(self):
         self.quiz.quiz_name = ""
         with self.assertRaisesMessage(ValidationError, "Quiz name is required"):

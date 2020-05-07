@@ -30,7 +30,6 @@ class QuizFormTest(TestCase):
         self.assertEqual(f.quiz_name, "test_quiz")
         self.assertEqual(f.creator, self.user)
         self.assertEqual(f.instances_played, 0)
-        self.assertEqual(f.created_date, localtime(now()))
 
 
     def test_raise_ValidationError_if_quiz_name_is_blank(self):

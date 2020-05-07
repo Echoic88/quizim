@@ -29,12 +29,14 @@ def checkout(request):
 
         subject = "Quizim Receipt"
         html_message = render_to_string("checkout/receipt-email.html", {"context":context})
-        print(html_message)
         plain_message = strip_tags(html_message)
         from_email = settings.DEFAULT_FROM_EMAIL
         to = user.email
         mail.send_mail(subject, plain_message, from_email, [to,], html_message=html_message)
         
+        del request.session["cart"]
+
+
         return redirect(reverse("checkout:payment_success"))
 
     else:
