@@ -10,7 +10,7 @@ import uuid
 
 # Create your models here.
 class Quiz(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     quiz_name = models.CharField(max_length=100, blank=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     created_date = models.DateTimeField(auto_now_add=True)
@@ -21,7 +21,7 @@ class Quiz(models.Model):
 
 
     def __str__(self):
-        return f"{self.id}:{self.quiz_name}"
+        return f"{self.quiz_name}:{self.creator.username}"
 
 
     def clean(self):
@@ -29,7 +29,7 @@ class Quiz(models.Model):
             raise ValidationError("Quiz name is required", code="name_required")
         if len(self.quiz_name) > 100:
             raise ValidationError("Quiz name is too long - 100 characters maximum", code="name_too_long")
-
+    
 
 class PlayedQuiz(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -82,7 +82,6 @@ class PlayerAnswer(models.Model):
     def __str__(self):
         return f"{self.question.quiz.quiz_name}:{self.question.question}:{self.player_answer}:{self.question.correct_answer}:{self.player}"
 
-
     def clean_player_answer(self):
         if len(self.player_answer) > 100:
             raise ValidationError("Max length is 100 characters", code="max_length_breached")    
@@ -112,7 +111,7 @@ class Order(models.Model):
 
 
 @receiver(pre_save, sender=PlayerAnswer)
-def create_user_profile(sender, instance, *args, **kwargs):
+def compare_answers(sender, instance, *args, **kwargs):
     # use format_answer function to standardise the player answer and correct answer
     # before comparison. If the comparison matches mark the player question as correct
     if format_answer(instance.player_answer) == format_answer(instance.question.correct_answer):

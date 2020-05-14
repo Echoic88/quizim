@@ -1,9 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if user.is_authenticated %}
 <div class="row">
-    <div class="col">
+    <div class="col border border-dark py-3 my-5">
+        <p>Quizes Played: {{ number_quizes_played }}</p>
+        <p>Percentage correct: {{ user_percentage_correct }}&#37</p>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col border border-dark py-3 my-5">
+        <table>
+            <tr>
+                <th>Player</th>
+                <th>Score</th>
+            </tr>
+            {% for player in leaderboard %}
+            <tr>
+                <td>{{ player.player }}</td>
+                <td>{{ player.score }}&#37</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col border border-dark py-3 my-5">
         <h1>Home</h1>
-        <a href="{% url 'accounts:signup' %}" class="btn">SignUp</a>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="{% url 'accounts:signin' %}" method="POST">
+            {% csrf_token %}
+            {{ login_form.as_p }}
+            <button type="submit" class="btn btn-success">Log In</button>
+        </form>
+        <a href="{% url 'accounts:password_reset' %}">Forgotten password?</a>
+        <br />
+        <a href="{% url 'accounts:signout' %}" class="btn btn-danger">Logout</a>
+        <br />
+        <a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SignUp</a>
+
     </div>
 </div>
 {% endblock %}

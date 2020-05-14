@@ -28,9 +28,7 @@ def checkout(request):
         user = User.objects.get(id=request.user.id)
 
         for product in context:
-            print(product)
             quiz=product["product"]
-            print(quiz.quiz)
             Order.objects.create(
                 quiz=quiz.quiz,
                 customer=request.user
