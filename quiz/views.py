@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from accounts.models import Profile
 from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSet, PlayerAnswerModelFormSet
 from .models import Question, Quiz, PlayerAnswer, PlayedQuiz
-from django.contrib.auth.models import User
 import uuid
-
 
 # Create your views here.
 
@@ -37,8 +40,24 @@ def create_quiz(request):
                 f.quiz = q
                 f.save()
 
-        return redirect(reverse("quiz:index"))
+        mailing_list = []
+        people_to_email = Profile.objects.filter(receive_email=True)
+        current_site = get_current_site(request)
+        subject = "New Quiz!"
+        quiz_maker = request.user.username
+        from_mail="quizm4project@gmail.com"
+        message = render_to_string("quiz/new-quiz-email.html", {
+            "domain": current_site.domain,
+            "quiz_maker":quiz_maker,
+            "quiz_id":q.id
+        })
 
+        for person in people_to_email:
+            recipient_name = "{0} {1}".format(person.user.first_name, person.user.last_name)
+            recipient_email = person.user.email
+            send_mail(subject, message, from_mail, [recipient_email,])
+
+        return redirect(reverse("quiz:index"))
 
     else:
         quiz_form = QuizForm()
@@ -114,6 +133,9 @@ def play_quiz(request, id):
                 queryset=questions
             )
             for form in formset:
+                # No check for form validation here since although the queryset
+                # is of Question instances these are not modified and saved.
+                # An instance of PlayerAnswer is created and saved for each form
                 question = questions.get(question=form["question"].value())
 
                 answer = PlayerAnswer(
@@ -127,7 +149,11 @@ def play_quiz(request, id):
             PlayedQuiz.objects.create(
                 quiz=quiz,
                 player=request.user
-            )      
+            )
+
+            # Update the counter for instances of this quiz played 
+            quiz.instances_played += 1
+            quiz.save()
 
             return redirect("quiz:quiz_result", id=quiz.id)
 
@@ -138,10 +164,6 @@ def play_quiz(request, id):
         formset = PlayerAnswerModelFormSet(
             queryset=questions
         )
-
-        # Delete this
-        for form in formset:
-            q = questions.get(question=form["question"].value())
 
         return render(request, "quiz/play-quiz.html", {
             "quiz":quiz,

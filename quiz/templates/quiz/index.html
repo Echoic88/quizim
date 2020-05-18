@@ -2,6 +2,16 @@
 {% block content %}
 <div class="row">
     <div class="col">
+        <p>Temporary</p>
+        {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
         <h1>Quiz Home (temporary)</h1>
         <a href="{% url 'quiz:create_quiz' %}" class="btn btn-success btn-block">Create Quiz</a>
     </div>
