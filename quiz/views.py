@@ -29,9 +29,10 @@ def create_quiz(request):
         questions_formset = CreateQuestionModelFormSet(request.POST)
 
         if quiz_form.is_valid():
-             q = quiz_form.save(commit=False)
-             q.creator = request.user
-             q.save()
+            q = quiz_form.save(commit=False)
+            q.id = uuid.uuid4()
+            q.creator = request.user
+            q.save()
 
         if questions_formset.is_valid():
             for form in questions_formset:

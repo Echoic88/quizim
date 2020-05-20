@@ -79,13 +79,25 @@ class SignUpPendingTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-"""
-class SignInTest(TestCase):
-    client = Client()
-    response = client.get(reverse("accounts:sigin"))
-    self.assertTemplateUsed
-"""
 
+class SignInTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create(
+            username="test_user",
+        )
+        self.user.set_password("1290Pass")
+
+
+    def test_successful_signin(self):
+        response = self.client.login(
+            username = "test_user",
+            password = "1290Pass"
+        )
+        self.assertTrue(self.user.is_authenticated)
+
+        
 class SignOutTest(TestCase):
     def test_signout_logs_user_out_and_return_to_home_page(self):
         client = Client()

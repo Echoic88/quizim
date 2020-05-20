@@ -104,7 +104,7 @@ def signin(request):
             return redirect(reverse("home:index"))
 
         else:
-            messages.error(request, "Sorry. We dont recognise that username. Register by clicking the button below")
+            messages.error(request, "Incorrect username or password. Please try again or register")
             return redirect(reverse("home:index"))
 
     else:

@@ -35,6 +35,7 @@ def index(request):
     return render(request, "userarea/index.html", context)
 
 
+# @login_required
 def update_user_details(request):
     """
     Form to update user details
