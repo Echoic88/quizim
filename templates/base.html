@@ -15,61 +15,95 @@
 </head>
 
 <body>
-  <header class="row">
-    <div class="col-10">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
+  <div class="page-wrapper">
+    <div class="content-wrapper">
+      <div class="header-wrapper container-fluid">
+        <header class="row d-flex align-items-center">
+          <nav class="col-sm-12 col-md-8 navbar navbar-expand-md">
+            <a class="navbar-brand" href="{% url 'home:index' %}">
+              <div class="logo-wrapper">
+                <img src="{% static 'images/question-mark-logo2.png' %}" alt="Quizim Header Logo" class="logo-image">
+              </div>
+            </a>
+            <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target="#mobileMenu"
+              aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'home:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'quiz:index' %}">Quiz</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'userarea:index' %}">User Area</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'store:index' %}">Store</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <div class="col-md-4 d-none d-md-flex justify-content-center align-items-center">
+            {% if user.is_authenticated %}
+            <span>Hi {{ user.username }}</span>
+            <a href="{% url 'accounts:signout' %}" role="button" class="btn btn-danger btn-sm">Logout</a>
+            {% else %}
+            <span>Please log in</span>
+            {% endif %}
+            <a href="{% url 'cart:view_cart' %}" class="header-cart">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="sr-only">Shopping Cart</span>
+              {% if product_count %}
+              <span>({{ product_count }})</span>
+              <span>&euro;{{ total_price }}</span>
+              {% else %}
+              <span class="sr-only">Empty Cart</span>
+              {% endif %}
+            </a>
+          </div>
+        </header>
+      </div>
+
+      <main>
+        <div class="collapse navbar-collapse mobile-menu-overlay" id="mobileMenu">
+          <ul class="navbar-nav mr-auto mt-lg-0">
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'home:index' %}">Home</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'quiz:index' %}">Quiz</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'userarea:index' %}">User Area</a>
+              <a class="nav-link" href="{% url 'userarea:index' %}">User Area</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'store:index' %}">Store</a>
+              <a class="nav-link" href="{% url 'store:index' %}">Store</a>
+            </li>
+            <li>
+              {% if user.is_authenticated %}
+              <a href="{% url 'accounts:signout' %}" role="button"
+                class="btn btn-danger btn-sm d-sm-block d-md-none">Logout</a>
+              {% endif %}
             </li>
           </ul>
         </div>
-      </nav>
-    </div>
-    <div class="col-2 d-flex justify-content-center align-items-center">
-      <a href="{% url 'cart:view_cart' %}" class="header-cart">
-        <i class="fas fa-shopping-cart"></i>
-        {% if product_count %}
-        <span>({{ product_count }})</span>
-        <span>&euro;{{ total_price }}</span>
-        {% endif %}
-      </a>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          {% if user.is_authenticated %}
-          <p>{{ user.username }}</p>
-          {% else %}
-          <p>Nobody logged in</p>
-          {% endif %}
+        <div class="container">
+          {% block content %}
+          {% endblock %}
         </div>
-      </div>
-      {% block content %}
-      {% endblock %}
+      </main>
+
+      <footer class="container-fluid">
+        <div class="row">
+          <div class="col d-flex align-items-center">
+            <h3>M4 Project</h3>
+          </div>
+        </div>
+      </footer>
     </div>
-  </main>
-  </div>
-  <footer class="row">
-  </footer>
   </div>
 </body>
 

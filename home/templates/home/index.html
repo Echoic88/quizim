@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Home{% endblock %}
 
+{% block content %}
 {% if user.is_authenticated %}
 <div class="row">
-    <div class="col border border-dark py-3 my-5">
-        <p>Quizes Played: {{ number_quizes_played }}</p>
-        <p>Percentage correct: {{ user_percentage_correct }}&#37</p>
+    <div class="col border border-dark py-3 d-flex justify-content-between">
+        <span class="w-50 text-center">You have played {{ number_quizes_played }} quizes</span>
+        <span class="w-50 text-center">You've answered {{ user_percentage_correct }}&#37 correctly</span>
     </div>
 </div>
-{% endif %}
-
 <div class="row">
-    <div class="col border border-dark py-3 my-5">
+    <div class="col-8 border border-dark py-3 my-5">
         <table>
             <tr>
                 <th>Player</th>
@@ -25,16 +26,56 @@
             {% endfor %}
         </table>
     </div>
+    <div class="col-4 border border-dark py-3 my-5">
+        <h2>New in store!</h2>
+    </div>
 </div>
 
+{# Quizes #}
+<div class="row">
+    {% for quiz in quizes %}
+    <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+        <a href="{% url 'quiz:play_quiz' quiz.id %}" class="quiz-block-link">
+            <span class="sr-only">Play quiz {{ quiz.quiz_name }} by {{ quiz.creator }}</span>
+            <div class="quiz-outer d-flex justify-content-center align-items-center">
+                <div class="quiz-inner">
+                    <div class="quiz-image-wrapper d-flex align-items-center justify-content-center">
+                        <img class="quiz-image" src="{% static question_man_list|random %}">
+                    </div>
+                </div>
+            </div>
+            <p class="quiz-name">{{ quiz.quiz_name }} by {{ quiz.creator }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col">
+        <div class="logged-out-wrapper d-flex align-items-center justify-content-center">
+            <div class="logged-out-jumbo jumbotron">
+                <h1>Quizim</h1>
+                <p>Create and share quizes</p>
+                <button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#loginModal">
+                    Login
+                </button>
+                <a href="{% url 'accounts:signup' %}">
+                    <p class="red-link">Or register here</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
+{% comment %}
 <div class="row">
     <div class="col border border-dark py-3 my-5">
         <h1>Home</h1>
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-                <li class="messages-list-item">{{ message }}</li>
+            <li class="messages-list-item">{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -48,7 +89,33 @@
         <a href="{% url 'accounts:signout' %}" class="btn btn-danger">Logout</a>
         <br />
         <a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SignUp</a>
+    </div>
+</div>
+{% endcomment %}
 
+{# Login Modal #}
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLongTitle">Please login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'accounts:signin' %}" method="POST">
+                    {% csrf_token %}
+                    {{ login_form|crispy }}
+                    <div class="d-flex justify-content-around">
+                        <button type="submit" class="btn btn-success login-modal-buttons">Log In</button>
+                        <button type="button" class="btn btn-secondary login-modal-buttons"
+                            data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

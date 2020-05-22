@@ -17,7 +17,7 @@ class UserAreaIndexViewTest(TestCase):
         client = Client()
         response = client.get(reverse("userarea:index"))  
         # self.assertTemplateUsed(response, template_name="userarea/index.html")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
 
 """

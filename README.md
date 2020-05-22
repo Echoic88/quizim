@@ -40,3 +40,8 @@ https://simpleisbetterthancomplex.com/
 * MDN Django Tutorial
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website
 
+
+## Image credits
+* Question Mark logo from Clipart Library  
+http://clipart-library.com/clipart/pTqre5xac.htm
+

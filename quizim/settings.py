@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'django_countries',
     'accounts',
     'home',
@@ -167,3 +168,6 @@ LOGIN_URL = "/"
 # Stripe keys
 STRIPE_PUBLISHABLE = os.getenv("STRIPE_PUBLISHABLE")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+#Crispy forms template pack
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
