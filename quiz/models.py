@@ -36,6 +36,10 @@ class PlayedQuiz(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     played_date = models.DateTimeField(auto_now=True)
 
+    def score(self):
+        answers = PlayerAnswer.objects.filter(player=self.player).filter(quiz=self.quiz)
+        return answers.filter(correct=True).count()/answers.count()
+    
     def __str__(self):
         return f"{self.quiz}:{self.player}.{self.played_date}"
 
