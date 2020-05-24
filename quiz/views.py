@@ -14,9 +14,16 @@ def index(request):
     """
     Temporary home page for testing quiz links
     """
-    quizes = Quiz.objects.exclude(creator=request.user)
+    last_three_user_quizes = Quiz.objects.filter(creator=request.user).order_by("-created_date")[:3]
+    non_user_quizes = Quiz.objects.exclude(creator=request.user)
+    question_man_list = []
+    for i in range(4):
+        question_man_list.append("images/question-man{0}.png".format(i))
+
     return render(request, "quiz/index.html", {
-        "quizes":quizes
+        "question_man_list":question_man_list,
+        "quizes":non_user_quizes,
+        "user_quizes":last_three_user_quizes
     })
 
 

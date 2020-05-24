@@ -1,40 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col">
-        <p>Temporary</p>
         {% if messages %}
         {% for message in messages %}
-            <p>{{ message }}</p>
+        <p>{{ message }}</p>
         {% endfor %}
         {% endif %}
     </div>
 </div>
-<div class="row">
+<div class="row my-5">
     <div class="col">
-        <h1>Quiz Home (temporary)</h1>
+        <h1>Create a quiz</h1>
         <a href="{% url 'quiz:create_quiz' %}" class="btn btn-success btn-block">Create Quiz</a>
     </div>
 </div>
-<div class="row">
+{% if user_quizes %}
+<div class="row my-5">
     <div class="col">
-        {% if quizes %}
-            {% for quiz in quizes %}
-            <div class="quiz-block">
-                <h3>{{ quiz.quiz_name }}</h3>
-                <p>Created by: {{ quiz.creator }}</p>
-                {{quiz.id}}
-                <a href="{% url 'quiz:play_quiz' quiz.id %}">Play</a>
+        <h2>Edit your last three quizes</h2>
+        <div class="row">
+            {% for quiz in user_quizes %}
+            <div class="col-12 col-md-4">
+                <a href="{% url 'quiz:edit_quiz' quiz.id %}" role="button"
+                    class="btn btn-primary btn-block edit-quiz-button">{{ quiz.quiz_name }}</a>
             </div>
             {% endfor %}
-        {% else %}
-        <div class="jumbotron">
-            <h1>Whoops! No quizes yet!</h1>
-            <p>Be the first to create a quiz</p>
         </div>
-        {% endif %}
-        
     </div>
+</div>
+{% endif %}
+<div class="row">
+    {% if quizes %}
+    {% for quiz in quizes %}
+    <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+        <a href="{% url 'quiz:play_quiz' quiz.id %}" class="quiz-block-link">
+            <span class="sr-only">Play quiz {{ quiz.quiz_name }} by {{ quiz.creator }}</span>
+            <div class="quiz-outer d-flex justify-content-center align-items-center">
+                <div class="quiz-inner">
+                    <div class="quiz-image-wrapper d-flex align-items-center justify-content-center">
+                        <img class="quiz-image" src="{% static question_man_list|random %}">
+                    </div>
+                </div>
+            </div>
+            <p class="quiz-name">{{ quiz.quiz_name }} by {{ quiz.creator }}</p>
+        </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="jumbotron">
+        <h1>Quack! Nobody else has created a quiz yet!</h1>
+        <img src="{% static 'images\sadduck.png' %}">
+        <span>Check out our
+            <a href="{% url 'store:index' %}" class="red-link">store</a>
+        </span>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}
