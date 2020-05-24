@@ -16,13 +16,28 @@ def index(request):
     """
     Return index.html for userarea
     """
+    last_5_quizes = PlayedQuiz.objects.filter(player=request.user).order_by("-played_date")[:5]
+    bar_chart_quiz_name = []
+    bar_chart_quiz_score = []
+    if last_5_quizes.exists():
+        for quiz in last_5_quizes:
+            bar_chart_quiz_name.append(quiz.quiz.quiz_name)
+            bar_chart_quiz_score.append(quiz.score())
+
+    bar_chart_data = {
+        "bar_labels":bar_chart_quiz_name,
+        "bar_series":bar_chart_quiz_score
+    }
+
+    print(bar_chart_data)
+
     user_form = UserUpdateForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
     user_quizes = Quiz.objects.filter(creator=request.user)
     quizes_played = PlayedQuiz.objects.filter(player=request.user)
     quizes_purchased = Order.objects.filter(customer=request.user)
     password_form = PasswordChangeForm(request.user)
-
+    
     context = {
         "user_form":user_form,
         "profile_form":profile_form,
@@ -30,6 +45,7 @@ def index(request):
         "quizes_played":quizes_played,
         "quizes_purchased":quizes_purchased,
         "password_form":password_form,
+        "bar_chart_data":bar_chart_data
     }
 
     return render(request, "userarea/index.html", context)
@@ -43,7 +59,8 @@ def update_user_details(request):
     if request.method =="POST":
 
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        profile_form = ProfileForm(
+            request.POST, request.FILES, instance=request.user.profile)
         
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()

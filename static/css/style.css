@@ -3,6 +3,7 @@
 /* General styling */
 html, body {
     font-family: 'Balsamiq Sans', cursive;
+    font-size: 1rem;
     height:100%;
     width:100%;
 }
@@ -18,12 +19,15 @@ a:hover {
 .content-wrapper {
     padding-bottom: 10vh;
 }
-.messages-list-item {
+ul li {
     list-style-type:none;   
 }
 .page-wrapper {
     position: relative;
     min-height: 100vh;
+}
+.ul li {
+    list-style-type:none;   
 }
 
 /* Header */

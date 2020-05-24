@@ -1,14 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block css %}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 <link rel="stylesheet" href="{% static 'userarea/css/style.css' %}">
 {% endblock %}
 {% block title %}User Area{% endblock %}
 {% block content %}
-
+{{ bar_chart_data|json_script:"bar_chart_data" }}
 <div class="row">
     <div class="col">
-        <h1>User Area</h1>
+        <div class="graphs-wrapper">
+            <div id="bar-chart">
+
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -16,8 +22,8 @@
         <h2>Your Details</h2>
         <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
+            {{ user_form|crispy }}
+            {{ profile_form|crispy }}
             <div class="profile-image-container">
                 <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" class="profile-image">
             </div>
@@ -30,7 +36,7 @@
         <h2>Change Password</h2>
         <form action="{% url 'userarea:change_password' %}" method="POST">
             {% csrf_token %}
-            {{ password_form.as_p }}
+            {{ password_form|crispy }}
             <button type="submit" class="btn btn-block btn-success">Change Password</button>
         </form>
         {% if messages %}
@@ -81,5 +87,10 @@
         {% endif %}
     </div>
 </div>
+
+{% endblock %}
+{% block js %}
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<script src="{% static 'userarea/js/userarea_charts.js' %}"></script>
 
 {% endblock %}
