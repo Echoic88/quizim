@@ -79,16 +79,6 @@
             {% endfor %}
         </ul>
         {% endif %}
-        <form action="{% url 'accounts:signin' %}" method="POST">
-            {% csrf_token %}
-            {{ login_form.as_p }}
-            <button type="submit" class="btn btn-success">Log In</button>
-        </form>
-        <a href="{% url 'accounts:password_reset' %}">Forgotten password?</a>
-        <br />
-        <a href="{% url 'accounts:signout' %}" class="btn btn-danger">Logout</a>
-        <br />
-        <a href="{% url 'accounts:signup' %}" class="btn btn-secondary">SignUp</a>
     </div>
 </div>
 {% endcomment %}
