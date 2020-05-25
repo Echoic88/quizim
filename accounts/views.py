@@ -15,7 +15,6 @@ from .tokens import account_activation_token
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
-
         try:
             existing_user = User.objects.get(username=form["username"].value())
         except:
@@ -24,6 +23,16 @@ def signup(request):
         if existing_user:
             messages.error(request, "This username is taken. Please choose another one")
             return redirect(reverse("accounts:signup"))
+
+        try:
+            existing_email = User.objects.get(email=form["email"].value())
+        except:
+            existing_mail = None
+        
+        if existing_email:
+            messages.error(request, "This email address is taken. Please choose another one")
+            return redirect(reverse("accounts:signup"))
+
 
         else:
             # Modified from Simple Is Better Than Complex
@@ -49,10 +58,8 @@ def signup(request):
                     print("Error saving user and send confirmation email")
         
             else:
-                print("invalid_form")
-                return redirect(reverse("home:index"))
-
-        return redirect(reverse("home:index"))
+                messages.error(request, "Invalid Form. Please try again")
+                return redirect(reverse("accounts:signup"))
 
     else:
         form = SignUpForm()
