@@ -21,14 +21,18 @@
                 <td>{{ result.player_answer }}</td>
                 <td>{{ result.correct_answer }}</td>
                 {% if result.correct %}
-                <td>You're Right!!!</td>
+                    <td>You're Right!!!</td>
                 {% else %}
-                <td>Didn't get this one :-(</td>
+                    <td>Didn't get this one :-(</td>
                 {% endif %}
             </tr>
             {% endfor %}
         </table>
     </div>
 </div>
-
+<div class="row">
+    <div class="col">
+        <a href="{% url 'quiz:index' %}" role="button" class="btn btn-warning btn-block">Back to quizes</a>
+    </div>
+</div>
 {% endblock %}

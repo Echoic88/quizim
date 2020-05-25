@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -159,14 +160,14 @@ def play_quiz(request, id):
                 player=request.user
             )
 
-            # Update the counter for instances of this quiz played 
             quiz.instances_played += 1
             quiz.save()
 
             return redirect("quiz:quiz_result", id=quiz.id)
 
         except:
-            print("Error saving Player Answers and Played Quiz")
+            messages.error(request, "Sorry, there was an error saving your quiz. Please try another")
+            return redirect(reverse("quiz:index"))
             
     else:
         formset = PlayerAnswerModelFormSet(

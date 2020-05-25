@@ -4,12 +4,12 @@
 {% block content %}
 <div class="row">
     <div class="col">
-        <h1>Play Quiz</h1>
+        <h1>{{ quiz.quiz_name }}</h1>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col">
         <form action="{% url 'quiz:play_quiz' quiz.id %}" method="POST">
             {% csrf_token %}
             {{ formset.management_form }}
