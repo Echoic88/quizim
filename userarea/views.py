@@ -68,8 +68,8 @@ def update_user_details(request):
             return redirect(reverse("userarea:index"))
 
         else:
-            print(user_form.errors)
-            print(profile_form.errors)
+            messages.error(request, user_form.errors)
+            messages.error(request, profile_form.errors)
 
     else:
         user_form = UserUpdateForm(instance=request.user)

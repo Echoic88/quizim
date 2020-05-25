@@ -25,7 +25,13 @@
             {{ user_form|crispy }}
             {{ profile_form|crispy }}
             <div class="profile-image-container">
-                <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" class="profile-image">
+                {% if user.profile.profile_pic %}
+                <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" alt="User's profile picture"
+                    class="profile-image">
+                {% else %}
+                <img src="{% static 'userarea/images/question-mark-profile-temp.jpg' %}" alt="Default profile picture"
+                    class="profile-image">
+                {% endif %}
             </div>
             <button type="submit" class="btn btn-success btn-block">Save</button>
         </form>
@@ -41,7 +47,7 @@
         </form>
         {% if messages %}
         {% for message in messages %}
-            <p>Your password has been changed!</p>
+        <p>Your password has been changed!</p>
         {% endfor %}
         {% endif %}
     </div>
@@ -87,10 +93,8 @@
         {% endif %}
     </div>
 </div>
-
 {% endblock %}
 {% block js %}
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 <script src="{% static 'userarea/js/userarea_charts.js' %}"></script>
-
 {% endblock %}
