@@ -1,7 +1,13 @@
 {% autoescape off %}
 Hi {{ user.username }},
 
-Please click on the link below to confirm your registration:
+Thanks for signing up with Quizim!
+
+Please click on the link below to confirm your Quizim registration and start enhoying quizes today!
 
 http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+
+Kind Regards,
+The Quizim Team
+
 {% endautoescape %}

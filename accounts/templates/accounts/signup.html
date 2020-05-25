@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="row">
     <div class="col">
@@ -6,14 +7,14 @@
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                {% endfor %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
         </ul>
         {% endif %}
         <form action="{% url 'accounts:signup' %}" method="POST">
             {% csrf_token %}
-            {{ form }}
-            <button type="submit">Register</button>
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Register</button>
         </form>
     </div>
 </div>

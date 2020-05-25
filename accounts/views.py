@@ -27,12 +27,11 @@ def signup(request):
         try:
             existing_email = User.objects.get(email=form["email"].value())
         except:
-            existing_mail = None
+            existing_email = None
         
         if existing_email:
             messages.error(request, "This email address is taken. Please choose another one")
             return redirect(reverse("accounts:signup"))
-
 
         else:
             # Modified from Simple Is Better Than Complex
