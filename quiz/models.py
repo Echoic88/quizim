@@ -130,7 +130,7 @@ def paid_for_quiz(sender, instance, created, **kwargs):
     admin can set the price to zero to make the product a free
     purchase.
     """
-    admin = User.objects.get(pk=1)
+    admin = User.objects.get(username="admin")
     if instance.creator == admin:
         if created:
             PaidQuiz.objects.create(quiz=instance)
