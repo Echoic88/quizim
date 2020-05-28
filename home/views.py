@@ -12,9 +12,9 @@ def index(request):
         question_man_list.append("images/question-man{0}.png".format(i))
 
     # quizes created by admin should be excluded since admin creates quizes to be used in-store
-    quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin"))
 
     if request.user.is_authenticated:
+        quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin"))
         played_quizes = PlayedQuiz.objects.filter(player=request.user)
         played_quizes_list = []
         for quiz in quizes:
@@ -22,8 +22,11 @@ def index(request):
                 if quiz == played.quiz:
                     played_quizes_list.append(quiz)
 
-    return render(request, "home/index.html", {
-        "question_man_list":question_man_list,
-        "quizes":quizes,
-        "played_quizes_list":played_quizes_list
-    })
+        return render(request, "home/index.html", {
+            "question_man_list":question_man_list,
+            "quizes":quizes,
+            "played_quizes_list":played_quizes_list
+        })
+
+    else:
+        return render(request,"home/index.html")
