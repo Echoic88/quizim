@@ -15,16 +15,26 @@ def index(request):
     """
     Temporary home page for testing quiz links
     """
-    last_three_user_quizes = Quiz.objects.filter(creator=request.user).order_by("-created_date")[:3]
-    non_user_quizes = Quiz.objects.exclude(creator=request.user)
+    quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin"))
+    
     question_man_list = []
     for i in range(4):
         question_man_list.append("images/question-man{0}.png".format(i))
 
+    if request.user.is_authenticated:
+        played_quizes = PlayedQuiz.objects.filter(player=request.user)
+        played_quizes_list = []
+        for quiz in quizes:
+            for played in played_quizes:
+                if quiz == played.quiz:
+                    played_quizes_list.append(quiz)
+
+        print(played_quizes_list)
+
     return render(request, "quiz/index.html", {
         "question_man_list":question_man_list,
-        "quizes":non_user_quizes,
-        "user_quizes":last_three_user_quizes
+        "quizes":quizes,
+        "played_quizes_list":played_quizes_list
     })
 
 

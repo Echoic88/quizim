@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Quiz{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col">
@@ -16,38 +17,38 @@
         <a href="{% url 'quiz:create_quiz' %}" class="btn btn-success btn-block">Create Quiz</a>
     </div>
 </div>
-{% if user_quizes %}
-<div class="row my-5">
-    <div class="col">
-        <h2>Edit your last three quizes</h2>
-        <div class="row">
-            {% for quiz in user_quizes %}
-            <div class="col-12 col-md-4">
-                <a href="{% url 'quiz:edit_quiz' quiz.id %}" role="button"
-                    class="btn btn-primary btn-block edit-quiz-button">{{ quiz.quiz_name }}</a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-{% endif %}
 <div class="row">
     {% if quizes %}
-    {% for quiz in quizes %}
-    <div class="col-6 d-flex flex-column justify-content-center align-items-center">
-        <a href="{% url 'quiz:play_quiz' quiz.id %}" class="quiz-block-link">
-            <span class="sr-only">Play quiz {{ quiz.quiz_name }} by {{ quiz.creator }}</span>
-            <div class="quiz-outer d-flex justify-content-center align-items-center">
-                <div class="quiz-inner">
-                    <div class="quiz-image-wrapper d-flex align-items-center justify-content-center">
-                        <img class="quiz-image" src="{% static question_man_list|random %}">
+        {% for quiz in quizes %}
+            {% if quiz in played_quizes_list %}
+            <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+                <span class="sr-only">{{ quiz.quiz_name }} by {{ quiz.creator }}. You have played this quiz</span>
+                <div class="quiz-outer d-flex justify-content-center align-items-center">
+                    <div class="quiz-inner">
+                        <div class="quiz-image-wrapper d-flex align-items-center justify-content-center">
+                            <img class="quiz-image" src="{% static question_man_list|random %}">
+                        </div>
                     </div>
                 </div>
+                <p class="quiz-name">{{ quiz.quiz_name }} by {{ quiz.creator }}</p>
+                <p class="quiz-name">You have played this quiz</p>
             </div>
-            <p class="quiz-name">{{ quiz.quiz_name }} by {{ quiz.creator }}</p>
-        </a>
-    </div>
-    {% endfor %}
+            {% else %}
+            <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+                <a href="{% url 'quiz:play_quiz' quiz.id %}">
+                    <span class="sr-only">Play quiz {{ quiz.quiz_name }} by {{ quiz.creator }}</span>
+                    <div class="quiz-outer d-flex justify-content-center align-items-center">
+                        <div class="quiz-inner">
+                            <div class="quiz-image-wrapper d-flex align-items-center justify-content-center">
+                                <img class="quiz-image" src="{% static question_man_list|random %}">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="quiz-name">{{ quiz.quiz_name }} by {{ quiz.creator }}</p>
+                </a>
+            </div>
+            {% endif %}
+        {% endfor %}
     {% else %}
     <div class="jumbotron">
         <h1>Quack! Nobody else has created a quiz yet!</h1>
