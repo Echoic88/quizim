@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block css %}<link rel="stylesheet" href="{% static 'checkout/css/stripe_style.css' %}">{% endblock %}
 
 
@@ -21,7 +22,7 @@
     <div class="col-6 border border-dark">
         <h2>Payment Details</h2>
         <form id="paymentDetailsForm">
-            {{ payment_details_form.as_p }}
+            {{ payment_details_form|crispy }}
         </form>
     </div>
     <div class="col-6 border border-dark">

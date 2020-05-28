@@ -8,15 +8,7 @@
 {% block title %}User Area{% endblock %}
 {% block content %}
 {{ bar_chart_data|json_script:"bar_chart_data" }}
-<div class="row">
-    <div class="col">
-        <div class="graphs-wrapper">
-            <div id="bar-chart">
 
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col border border-dark p-5 my-3">
         <h2>Your Details</h2>
@@ -52,13 +44,25 @@
         {% endif %}
     </div>
 </div>
+{% if quizes_played %}
 <div class="row">
-    <div class="col border border-dark p-5 my-3">
+    <div class="col">
+        <div class="graphs-wrapper">
+            <div id="bar-chart"></div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-12 col-md-4 border border-dark p-5 my-3">
         {% if user_quizes %}
         <h2>Quizes you've created:</h2>
         <ul>
             {% for quiz in user_quizes %}
-            <li>{{ quiz.quiz_name }}</li>
+            <li>
+                {{ quiz.quiz_name }}
+                <a href="{% url 'quiz:edit_quiz' quiz.id %}" class="btn btn-sm btn-primary" role="button">Edit</a>
+            </li>
             {% endfor %}
         </ul>
         {% else %}
@@ -66,28 +70,35 @@
         <a type="button" href="{% url 'quiz:create_quiz' %}" class="btn btn-primary">Create a quiz</a>
         {% endif %}
     </div>
-</div>
-<div class="row">
-    <div class="col border border-dark p-5 my-3">
+    <div class="col-12 col-md-4 border border-dark p-5 my-3">
         {% if quizes_played %}
         <h2>Quizes you've played:</h2>
         <ul>
             {% for quiz in quizes_played %}
-            <li>{{ quiz.quiz.quiz_name }}</li>
+            <li>{{ quiz.quiz.quiz_name }} - {{ quiz.score }}</li>
             {% endfor %}
         </ul>
         {% else %}
         <h2>Looks like you haven't played any quizes :-(</h2>
         {% endif %}
     </div>
-</div>
-<div class="row">
-    <div class="col border border-dark p-5 my-3">
+    <div class="col-12 col-md-4  border border-dark p-5 my-3">
         {% if quizes_purchased %}
         <h2>Quizes you've bought:</h2>
         <ul>
-            {% for quiz in quizes_purchased %}
-            <li>{{ quiz.quiz.quiz_name }}</li>
+            {% for purchase in quizes_purchased %}
+            {% if purchase.played %}
+            <li>
+                {{ purchase.quiz.quiz_name }}
+                <span>You have played this quiz</span>
+            </li>
+            {% else %}
+            <li>
+                {{ purchase.quiz.quiz_name }}
+                <a href="{% url 'quiz:play_quiz' purchase.quiz.id %}" class="btn btn-success" role="button">Play
+                    Quiz</a>
+            </li>
+            {% endif %}
             {% endfor %}
         </ul>
         {% endif %}

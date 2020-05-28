@@ -1,32 +1,45 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
+from django.contrib.auth.models import User, AnonymousUser
 from django.shortcuts import reverse
 from .views import index
 
 
 class UserAreaIndexViewTest(TestCase):
 
-    # def setUp(self):
-    #     self.client = Client()
-    #     self.user = User.objects.create(
-    #         username="test_user",
-    #     )
-    #     self.user.set_password("1290Pass")
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(
+            username="test_user",
+            email="test_email@test.com",
+            password="1290Pass"
+        )
+
+    def test_get_response_code_with_logged_in_user(self):
+        request = self.factory.get("userarea:index")
+        request.user = self.user
+        response = index(request)
+        self.assertEqual(response.status_code, 200)
 
 
-    def test_get_response_returns_correct_template(self):
-        client = Client()
-        response = client.get(reverse("userarea:index"))  
-        # self.assertTemplateUsed(response, template_name="userarea/index.html")
-        self.assertEqual(response.status_code, 302)
+class UpdateUserDetailsView(TestCase):
 
-
-"""
-    def test_get_response_returns_quiz_form_and_create_questions_formset(self):
-        response = self.client.get(reverse("quiz:create_quiz"))
-
-        quiz_form = response.context["quiz_form"]
-        questions_formset = response.context["questions_formset"]
-        self.assertIsInstance(quiz_form, QuizForm)
-        self.assertIsInstance(questions_formset, CreateQuestionModelFormSet)
-
-"""
+    def setUp(self):
+        self.client = Client()
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(
+            username="test_user",
+            email="test_email@test.com",
+            password="1290Pass"
+        )
+        self.profile = {
+            "user":self.user
+            "address1":"test",
+            "address2":"test",
+            "city":"test",
+            "postcode":"1234abc",
+            #IE is a valid country code for use with django-countries
+            "country":"IE", 
+            "profile_pic":"./test_pictures/test_pic.jpg",
+            "receive_email":True,
+        }

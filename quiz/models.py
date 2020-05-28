@@ -38,7 +38,8 @@ class PlayedQuiz(models.Model):
 
     def score(self):
         answers = PlayerAnswer.objects.filter(player=self.player).filter(quiz=self.quiz)
-        return answers.filter(correct=True).count()/answers.count()
+        score = round((answers.filter(correct=True).count()/answers.count()),2) 
+        return score
     
     def __str__(self):
         return f"{self.quiz}:{self.player}.{self.played_date}"
@@ -112,6 +113,14 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.quiz.quiz_name}:{self.customer.first_name} {self.customer.last_name}: {self.purchase_date}"
+
+    def played(self):
+        played_by_user = PlayedQuiz.objects.filter(player=self.customer)
+        for played_quiz in played_by_user:
+            if self.quiz == played_quiz.quiz:
+                return True
+            else:
+                return False
 
 
 @receiver(pre_save, sender=PlayerAnswer)

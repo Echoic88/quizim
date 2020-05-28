@@ -32,7 +32,6 @@ class UserUpdateFormTest(TestCase):
             "username":"test_user",
             "email":""
         }
-
         form = UserUpdateForm(data=data)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors["email"], ["This field is required.",])

@@ -16,7 +16,8 @@ Answers submitted by the player is compared with the correct answer with both be
 
 * Notifications - From the Userarea a user may select to receive notifications when a new quiz is uploaded.
 
-Wireframes used are available in the project_documents folder.
+Wireframes used are available in the ProjectDocuments folder.
+https://github.com/Echoic88/quizim/tree/master/ProjectDocuments
 
 ### Features left to implement
 

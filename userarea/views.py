@@ -29,13 +29,14 @@ def index(request):
         "bar_series":bar_chart_quiz_score
     }
 
-    print(bar_chart_data)
+    
 
     user_form = UserUpdateForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
     user_quizes = Quiz.objects.filter(creator=request.user)
     quizes_played = PlayedQuiz.objects.filter(player=request.user)
     quizes_purchased = Order.objects.filter(customer=request.user)
+
     password_form = PasswordChangeForm(request.user)
     
     context = {
