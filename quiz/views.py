@@ -36,7 +36,8 @@ def index(request):
         })
 
     else:
-        return render(request,"quiz/index.html")
+        messages.info(request, "Please log in to access quizes")
+        return redirect(reverse("home:index"))
 
 
 def create_quiz(request):

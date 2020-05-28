@@ -4,17 +4,17 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+{% if messages %}
 <div class="row">
     <div class="col">
-        {% if messages %}
         <ul class="messages">
             {% for message in messages %}
             <li class="messages-list-item">{{ message }}</li>
             {% endfor %}
         </ul>
-        {% endif %}
     </div>
 </div>
+{% endif %}
 {% if user.is_authenticated %}
 <div class="row">
     <div class="col border border-dark py-3 d-flex justify-content-between">
@@ -93,7 +93,6 @@
     </div>
 </div>
 {% endif %}
-
 
 {# Login Modal #}
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle"
