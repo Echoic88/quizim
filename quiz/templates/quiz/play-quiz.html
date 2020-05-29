@@ -1,34 +1,38 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load crispy_forms_tags %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
+{% endblock %}
+{% block title %}Play Quiz{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col">
-        <h1>{{ quiz.quiz_name }}</h1>
+        <h1 class="text-center">Quiz: {{ quiz.quiz_name }}</h1>
     </div>
 </div>
-
 <div class="row">
-    <div class="col">
-        <form action="{% url 'quiz:play_quiz' quiz.id %}" method="POST">
-            {% csrf_token %}
-            {{ formset.management_form }}
-            {% for form in formset %}
+    <div class="col d-flex justify-content-center">
+        <div class="form-general">
+            <form action="{% url 'quiz:play_quiz' quiz.id %}" method="POST">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
                 <div class="question-form input-group">
-                    <div class="question-form-field col-6">
-                        {{ form.question.value}}
+                    <div class="question-form-field col-12">
+                        {{ form.question.value }}
                     </div>
-                    <div class="question-form-field">
+                    <div class="d-none">
                         {{ form.question }}
                     </div>
-                    <div class="question-form-field col-6">
+                    <div class="question-form-field col-12">
                         {{ form.player_answer }}
                     </div>
                 </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success btn-block my-5">Save Answers</button>
-        </form>
+                {% endfor %}
+                <button type="submit" class="btn btn-success btn-block my-5">Save Answers</button>
+            </form>
+        </div>
     </div>
 </div>
-
 {% endblock %}

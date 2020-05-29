@@ -10,11 +10,9 @@ $(document).ready(function () {
         $(".delete-form-row:last").hide();
     }
 
-
     function addQuestionRow() {
 
         let numForms = $("#id_form-TOTAL_FORMS").val();
-
         let newForm = $(this).closest(".question-form").clone(true);
 
         //Increment the form number in the name field
@@ -95,5 +93,4 @@ $(document).ready(function () {
     $(".save-quiz-btn").click(function() {
         $(this).focus();
     });
-
 });

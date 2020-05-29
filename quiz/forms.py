@@ -36,7 +36,7 @@ CreateQuestionModelFormSet = modelformset_factory(
 EditQuestionModelFormSet = modelformset_factory(
     Question,
     fields = ["question","correct_answer"],
-    extra = 0,
+    extra = 1,
     can_delete = True,
     widgets = {
         "question": forms.TextInput(attrs={

@@ -78,6 +78,7 @@ def create_quiz(request):
             recipient_email = person.user.email
             send_mail(subject, message, from_mail, [recipient_email,])
 
+        messages.info(request, "Your quiz has been created. View and edit your quiz in the Userarea")
         return redirect(reverse("quiz:index"))
 
     else:
@@ -97,35 +98,36 @@ def edit_quiz(request, id):
     quiz = Quiz.objects.get(id=id)
     questions = Question.objects.filter(quiz=quiz)
 
+
     if request.method == 'POST':
         formset = EditQuestionModelFormSet(
             request.POST,
             queryset=questions
         )
+        try:
+            if formset.is_valid():
+                for form in formset:
+                    if form.is_valid():
+                        f = form.save(commit=False)
+                        f.quiz = quiz
+                        if Question.objects.filter(id=f.id).exists():
+                            f.save()
+                        else:
+                            f.id = uuid.uuid4()
+                            f.save()  
 
-        if formset.is_valid():
+                formset.save(commit=False)
+                for object in formset.deleted_objects:
+                    object.delete()
 
-            for form in formset:
-                if form.is_valid():
-                    f = form.save(commit=False)
-                    f.quiz = quiz
-                    if Question.objects.filter(id=f.id).exists():
-                        f.save()
-                    else:
-                        f.id = uuid.uuid4()
-                        f.save()
-                    
                 else:
                     print("form is not valid")
 
-            formset.save(commit=False)
-            for object in formset.deleted_objects:
-                object.delete()
+                messages.info(request, "Your quiz has been saved successfully.")
+                return redirect(reverse("userarea:index")) 
 
-            return redirect(reverse("quiz:index")) 
-
-        else:
-            print(formset.errors)
+        except:
+            messages.info(request, formset.errors)
             return redirect(reverse("quiz:index")) 
 
 

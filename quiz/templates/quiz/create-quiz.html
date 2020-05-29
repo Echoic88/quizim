@@ -1,39 +1,48 @@
 {% extends "base.html" %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
+{% endblock %}
 {% load crispy_forms_tags %}
-
+{% block title %}Create Quiz{% endblock %}
 {% block content %}
 <div class="row">
-    <div class="col">
-        <h1>Questions</h1>
+    <div class="col pt-5">
+        <h1 class="text-center">Create a quiz</h1>
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <form action="{% url 'quiz:create_quiz' %}" method="POST">
-            {% csrf_token %}
-            <div class="quiz-form">
-                {{ quiz_form|crispy }}
-            </div>
-            {{ questions_formset.management_form }}
-            {% for form in questions_formset %}
-            <div class="question-form input-group d-flex flex-column flex-md-row align-items-center justify-content-md-around">
-                <div class="question-form-field">
-                    {{ form.question.label}}
-                    {{ form.question }}
+    <div class="col d-flex justify-content-center">
+        <div class="form-general">
+            <form action="{% url 'quiz:create_quiz' %}" method="POST">
+                {% csrf_token %}
+                <div class="quiz-form">
+                    {{ quiz_form|crispy }}
                 </div>
-                <div class="question-form-field">
-                    {{ form.correct_answer.label }}
-                    {{ form.correct_answer }}
+                {{ questions_formset.management_form }}
+                {% for form in questions_formset %}
+                <div
+                    class="question-form input-group d-flex flex-column flex-md-row align-items-center justify-content-md-around">
+                    <div class="question-form-field">
+                        {{ form.question.label}}
+                        {{ form.question }}
+                    </div>
+                    <div class="question-form-field">
+                        {{ form.correct_answer.label }}
+                        {{ form.correct_answer }}
+                    </div>
+                    <div class="question-btn">
+                        <button type="button" class="btn btn-success add-form-row">Add Question</button>
+                        <button type="button"
+                            class="btn btn-danger delete-form-row create-page-delete-form-row">
+                            Delete Question
+                        </button>
+                    </div>
                 </div>
-                <div class="question-btn">
-                    <button type="button" class="btn btn-success add-form-row">+</button>
-                    <button type="button" class="btn btn-danger delete-form-row create-page-delete-form-row">-</button>
-                </div>
-            </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success btn-block my-5 save-questions-btn">Save Quiz</button>
-        </form>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block my-5 save-questions-btn">Save Quiz</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

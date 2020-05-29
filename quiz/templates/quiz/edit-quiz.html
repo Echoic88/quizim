@@ -3,36 +3,40 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
 {% endblock %}
-
+{% block title %}Edit Quiz{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col">
-        <h1>Questions</h1>
+        <h1 class="text-center">Edit Quiz</h1>
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <form action="{% url 'quiz:edit_quiz' quiz.id %}" method="POST">
-            {% csrf_token %}
-            {{ formset.management_form }}
-            {% for form in formset %}
-
-            <div class="question-form input-group">
+    <div class="col d-flex justify-content-center">
+        <div class="form-general">
+            <form action="{% url 'quiz:edit_quiz' quiz.id %}" method="POST">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                <div class="question-form input-group">
                     <div class="question-form-field">
+                        {{ form.question.label }}
                         {{ form.question }}
                     </div>
                     <div class="question-form-field">
+                        {{ form.correct_answer.label }}
                         {{ form.correct_answer }}
                     </div>
                     <div class="question-btn">
                         {{ form.DELETE }}
                         <button type="button" class="btn btn-success add-form-row">+</button>
-                        <button type="button" class="btn btn-danger delete-form-row edit-page-delete-form-row">-</button>
+                        <button type="button"
+                            class="btn btn-danger delete-form-row edit-page-delete-form-row">-</button>
                     </div>
                 </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success btn-block my-3">Save Quiz</button>
-        </form>
+                {% endfor %}
+                <button type="submit" class="btn btn-success my-3">Save Quiz</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

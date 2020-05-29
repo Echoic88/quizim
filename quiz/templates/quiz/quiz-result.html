@@ -1,14 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
+{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col">
-        <h1>Results</h1>
+        <h1 class="text-center py-5">Results</h1>
     </div>
 </div>
 
 <div class="row">
-    <div class="col">
-        <table class="table">
+    <div class="col d-flex justify-content-center">
+        <table class="results-table">
             <tr>
                 <th>Question</th>
                 <th>Answer</th>
@@ -21,18 +25,18 @@
                 <td>{{ result.player_answer }}</td>
                 <td>{{ result.correct_answer }}</td>
                 {% if result.correct %}
-                    <td>You're Right!!!</td>
+                    <td><i class="fas fa-check text-success"></i> You're Right!!!</td>
                 {% else %}
-                    <td>Didn't get this one :-(</td>
+                    <td><i class="fas fa-times text-danger"></i> Didn't get this one</td>
                 {% endif %}
             </tr>
             {% endfor %}
         </table>
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        <a href="{% url 'quiz:index' %}" role="button" class="btn btn-warning btn-block">Back to quizes</a>
+<div class="row my-5">
+    <div class="col d-flex justify-content-center">
+        <a href="{% url 'quiz:index' %}" role="button" class="btn btn-primary w-50">Back to quizes</a>
     </div>
 </div>
 {% endblock %}
