@@ -11,18 +11,22 @@
     <div class="col-12 col-md-10">
         {% for quiz in quizes %}
         <div class="row border border-dark rounded m-5 p-3">
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-7">
                 <h2>{{ quiz.quiz.quiz_name}}</h2>
             </div>
             <div class="col-6 col-md-2">
                 <p class="my-0">Price: {{ quiz.price }}</p>
             </div>
-            <div class="col-6 col-md-2 d-flex justify-content-center">
+            <div class="col-6 col-md-3 d-flex justify-content-center">
+                {% if quiz in previous_purchases_list %}
+                <p>Bought already</p>
+                {% else %}
                 <a href="{% url 'cart:add_to_cart' quiz.id %}" class="btn btn-success mx-3"
                     title="Add {{ quiz.quiz.quiz_name }} to cart"><i class="fas fa-shopping-cart"></i>
                 </a>
                 <a href="{% url 'cart:remove_from_cart' quiz.id %}" class="btn btn-danger mx-3"
                     title="Remove {{ quiz.quiz.quiz_name }} from cart"><i class="fas fa-times"></i></a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
