@@ -99,7 +99,6 @@ ul li {
 .leaderboard-table {
     border-spacing: 5px;
     width: 80%;
-
 }
 .leaderboard-table td, th{
     text-align: center;
@@ -124,7 +123,14 @@ ul li {
     color: rgb(184, 36, 36);
 }
 
-/* ------ Footer --------- */
+/*---------crispy forms -------------*/
+.form-control {
+    display: inline-block;
+    color: #000;
+    background-color:rgb(233, 227, 227);
+}
+
+/* ------ Footer ------------------- */
 footer {
     bottom: 0;
     color: #9a9a9a;
@@ -141,7 +147,7 @@ footer {
         font-size: 16px;
     }
     .form-general {
-        width:60%;
+        width:80%;
     }
     .header-wrapper {
         font-size: 1.75em;

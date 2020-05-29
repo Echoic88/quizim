@@ -1,35 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}Cart{% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col">
-        <h1>Cart</h1>
+<div class="row d-flex justify-content-center">
+    <div class="col-10 pt-5">
+        <h1>Review your order</h1>
     </div>
 </div>
-{% if messages %}
-<div class="row">
-    <div class="col">
-        <ul class="messages">
-            {% for message in messages %}
-            <li class="messages-list-item">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endif %}
-<div class="row row-flex">
-    <div class="col border border-dark my-5 py-3">
+<div class="row d-flex justify-content-center">
+    <div class="col-10 border border-dark my-5 py-3">
         {% for cart_item in cart_context %}
-        <div class="d-block">
-            <h3>{{ cart_item.product.quiz.quiz_name }}</h3>
-            <p>Price: {{ cart_item.product.price }}</p>
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <h3>{{ cart_item.product.quiz.quiz_name }}</h3>
+            </div>
+            <div class="col-6 col-md-2">
+                <p class="my-0">Price: &euro;{{ cart_item.product.price }}</p>
+            </div>
+            <div class="col-6 col-md-2 d-flex justify-content-end">
+                <a href="{% url 'cart:remove_from_cart' cart_item.product.id %}" class="btn btn-danger mx-3"
+                    title="Remove {{ cart_item.product.quiz.quiz_name }} from cart"><i class="fas fa-times"></i></a>
+            </div>
         </div>
         {% endfor %}
     </div>
 </div>
-<div class="row">
-    <p>Total</p>
-    <p>&euro;{{ total_price }}</p>
-    <a href="{% url 'checkout:checkout' %}" class="btn btn-success" role="button">Checkout</a>
+<div class="row d-flex justify-content-center">
+    <div class="col-10 d-flex justify-content-end">
+        <p>Total: &euro;{{ total_price }}</p>
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="col-10 d-flex justify-content-end">
+        <a href="{% url 'checkout:checkout' %}" class="btn btn-success" role="button">Checkout</a>
+    </div>
 </div>
 {% endblock %}
