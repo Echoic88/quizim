@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 /* General styling */
+
+
 html,
 body {
+    background-color: #fcf7f7;
     font-family: 'Balsamiq Sans', cursive;
-    font-size: 1rem;
+    font-size: 11px;
     height: 100%;
     width: 100%;
 }
@@ -37,6 +40,9 @@ ul li {
 .header-wrapper {
     background-color: #bdf1dd;
     height: 12vh;
+    position: sticky;
+    top:0;
+    z-index:2;
 }
 .logo-wrapper {
     height: auto;
@@ -47,11 +53,11 @@ ul li {
     width: 100%;
 }
 .main-container {
-    background-color: #dedede;
+    background-color: #f5f5f5;
     min-height:78vh;
 }
 .mobile-menu-overlay {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
     border: #000;
     z-index: 5;
 }
@@ -61,6 +67,47 @@ ul li {
 }
 
 /* ------ Main --------- */
+.form-general {
+    padding: 3rem;
+    width:90%;
+}
+.grey-overlay {
+    background-color: rgba(0,0,0,0.4);
+    border: 0.5px hidden;
+    border-radius: 5%;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+}
+.quiz-block {
+    height:20vh;
+    width:auto;
+}
+.quiz-image {
+    height:60%;
+    width:auto;
+    transition: height 0.5s, width 0.5s;
+}
+.quiz-image-active:hover {
+    height:70%;
+    width:auto;
+}
+.quiz-image-wrapper {
+    height:100%;
+    width:auto;
+}
+.leaderboard-table {
+    border-spacing: 5px;
+    width: 80%;
+
+}
+.leaderboard-table td, th{
+    text-align: center;
+    width:50%;
+}
+.leaderboard-table tr {
+    border: 1px solid black;
+}
 .login-modal-buttons {
     width: 40%;
 }
@@ -72,34 +119,6 @@ ul li {
     margin: 0;
     min-height: 78vh;
     padding: 10%;
-}
-.quiz-block-link {
-    height: 100%;
-    width: 100%;
-}
-.quiz-image-wrapper {
-    height: 20vh;
-    width: auto;
-}
-.quiz-image {
-    height: 100%;
-    margin: auto;
-    width: auto;
-}
-.quiz-inner {
-    height: 80%;
-    width: 80%;
-}
-.quiz-inner:hover {
-    height: 100%;
-    width: auto;
-}
-.quiz-outer {
-    background-color: #f6dab4;
-    border-radius: 5%;
-    margin: 5% 0;
-    height: 30vh;
-    width: 80%;
 }
 .red-link {
     color: rgb(184, 36, 36);
@@ -118,6 +137,12 @@ footer {
 
 /* media queries */
 @media (min-width:768px) {
+    body {
+        font-size: 16px;
+    }
+    .form-general {
+        width:60%;
+    }
     .header-wrapper {
         font-size: 1.75em;
         height: 15vh;
@@ -132,7 +157,6 @@ footer {
         width: 10vh;
     }
     .main-container {
-        background-color: #dedede;
         min-height:75vh;
     }
 }
