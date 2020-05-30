@@ -18,9 +18,16 @@ def index(request):
                 if previous.quiz == quiz.quiz:
                     previous_purchases_list.append(quiz)
 
+
+        question_man_list = []
+        for i in range(4):
+            question_man_list.append("images/question-man{0}.png".format(i))
+
+
         return render(request, "store/index.html", {
             "quizes":quizes,
-            "previous_purchases_list":previous_purchases_list
+            "previous_purchases_list":previous_purchases_list,
+            "question_man_list":question_man_list
         })
 
     else:

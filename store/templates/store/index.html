@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Store{% endblock %}
 {% block content %}
 <div class="row d-flex justify-content-center pt-5">
@@ -7,19 +8,22 @@
         <p>Buy one of our curated quizes here</p>
     </div>
 </div>
-<div class="row d-flex justify-content-center">
+<div class="row d-flex justify-content-center align-items-center my-5">
     <div class="col-12 col-md-10">
         {% for quiz in quizes %}
-        <div class="row border border-dark rounded m-5 p-3">
-            <div class="col-12 col-md-7">
-                <h2>{{ quiz.quiz.quiz_name}}</h2>
+        <div class="row m-1 my-md-5 p-1 p-md-3 quiz-block">
+            <div class="col-3 col-md-2 quiz-image-wrapper d-flex justify-content-center align-items-center">
+                <img src="{% static question_man_list|random %}" alt="quiz image" class="quiz-image">
             </div>
-            <div class="col-6 col-md-2">
+            <div class="col-9 col-md-5 d-flex align-items-center">
+                <h3>{{ quiz.quiz.quiz_name}}</h3>
+            </div>
+            <div class="col-6 col-md-2 d-flex align-items-center">
                 <p class="my-0">Price: {{ quiz.price }}</p>
             </div>
-            <div class="col-6 col-md-3 d-flex justify-content-center">
+            <div class="col-6 col-md-3 d-flex align-items-center">
                 {% if quiz in previous_purchases_list %}
-                <p>Bought already</p>
+                <p class="my-0">Already Purchased</p>
                 {% else %}
                 <a href="{% url 'cart:add_to_cart' quiz.id %}" class="btn btn-success mx-3"
                     title="Add {{ quiz.quiz.quiz_name }} to cart"><i class="fas fa-shopping-cart"></i>
@@ -32,7 +36,7 @@
         {% endfor %}
     </div>
 </div>
-<div class="row d-flex justify-content-center">
+<div class="row d-flex justify-content-center pb-5">
     <div class="col-10 d-flex justify-content-center">
         <a href="{% url 'cart:view_cart' %}" class="btn btn-primary btn-block w-50">View Cart</a>
     </div>
