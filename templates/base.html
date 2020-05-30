@@ -69,9 +69,6 @@
             {% if user.is_authenticated %}
             <span>Hi {{ user.username }}</span>
             <a href="{% url 'accounts:signout' %}" role="button" class="btn btn-danger btn-sm">Logout</a>
-            {% else %}
-            <span>Please log in</span>
-            {% endif %}
             <a href="{% url 'cart:view_cart' %}" class="header-cart">
               <i class="fas fa-shopping-cart"></i>
               <span class="sr-only">Shopping Cart</span>
@@ -82,6 +79,9 @@
               <span class="sr-only">Empty Cart</span>
               {% endif %}
             </a>
+            {% else %}
+            <span>Please log in</span>
+            {% endif %}
           </div>
         </header>
       </div>
