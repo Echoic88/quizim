@@ -106,7 +106,6 @@ def signin(request):
     
         if not user is None:
             login(request, user)
-            messages.success(request, f"Hi {user.username}")
             return redirect(reverse("home:index"))
 
         else:

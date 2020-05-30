@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from quiz.models import Quiz, PlayedQuiz, User
+from quiz.models import Quiz, PlayedQuiz, User, PaidQuiz
 
 # Create your views here.
 def index(request):
@@ -12,7 +12,6 @@ def index(request):
         question_man_list.append("images/question-man{0}.png".format(i))
 
     # quizes created by admin should be excluded since admin creates quizes to be used in-store
-
     if request.user.is_authenticated:
         quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin"))
         played_quizes = PlayedQuiz.objects.filter(player=request.user)

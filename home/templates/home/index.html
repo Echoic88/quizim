@@ -108,8 +108,7 @@
     </div>
 </div>
 {% endif %}
-
-
+=
 {# Login Modal #}
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle"
     aria-hidden="true">
@@ -129,6 +128,11 @@
                         <button type="submit" class="btn btn-success login-modal-buttons">Log In</button>
                         <button type="button" class="btn btn-secondary login-modal-buttons"
                             data-dismiss="modal">Close</button>
+                    </div>
+                    <div>
+                        <p>or reset your password 
+                            <a href="{% url 'accounts:password_reset' %}" class="red-link">here</a>
+                        </p>
                     </div>
                 </form>
             </div>
