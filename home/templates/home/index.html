@@ -45,7 +45,10 @@
 {# Quizes #}
 <div class="row mt-5 mb-2">
     <div class="col">
-        <h2 class="text-center">Most recent quizes uploaded</h2>
+        <h2>Most recent quizes uploaded</h2>
+        <p>See more in the 
+            <a href="{% url 'quiz:index' %}" class="red-link">Quiz section</a>
+        </p>
     </div>
 </div>
 <div class="row">
@@ -108,7 +111,7 @@
     </div>
 </div>
 {% endif %}
-=
+
 {# Login Modal #}
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle"
     aria-hidden="true">

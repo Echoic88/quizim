@@ -13,7 +13,7 @@ def index(request):
 
     # quizes created by admin should be excluded since admin creates quizes to be used in-store
     if request.user.is_authenticated:
-        quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin"))
+        quizes = Quiz.objects.exclude(creator=request.user).exclude(creator=User.objects.get(username="admin")).order_by("-created_date")[:6]
         played_quizes = PlayedQuiz.objects.filter(player=request.user)
         played_quizes_list = []
         for quiz in quizes:

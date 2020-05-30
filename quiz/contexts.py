@@ -28,7 +28,7 @@ def quizes_data(request):
 
         score_list = []
 
-        players = User.objects.all()
+        players = User.objects.exclude(username="admin")
         for player in players:
             score = percentage_correct_answers(player)
             score_list.append({
