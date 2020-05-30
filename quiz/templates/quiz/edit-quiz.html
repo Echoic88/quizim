@@ -19,6 +19,9 @@
                 {% for form in formset %}
                 <div class="question-form input-group">
                     <div class="question-form-field">
+                        {{ form.id }}
+                    </div>
+                    <div class="question-form-field">
                         {{ form.question.label }}
                         {{ form.question }}
                     </div>

@@ -10,7 +10,7 @@ import uuid
 
 # Create your models here.
 class Quiz(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     quiz_name = models.CharField(max_length=100, blank=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="users")
     created_date = models.DateTimeField(auto_now_add=True)
@@ -38,7 +38,7 @@ class PlayedQuiz(models.Model):
 
     def score(self):
         answers = PlayerAnswer.objects.filter(player=self.player).filter(quiz=self.quiz)
-        score = round((answers.filter(correct=True).count()/answers.count()),2) 
+        score = round((answers.filter(correct=True).count()/answers.count()),2)*100
         return score
     
     def __str__(self):
@@ -46,7 +46,7 @@ class PlayedQuiz(models.Model):
 
 
 class Question(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4())
     question = models.CharField(max_length=100, blank=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
     correct_answer = models.CharField(max_length=100, blank=True)
@@ -77,7 +77,7 @@ class Question(models.Model):
 
 
 class PlayerAnswer(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="playeranswers")
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     player_answer = models.CharField(max_length=100)

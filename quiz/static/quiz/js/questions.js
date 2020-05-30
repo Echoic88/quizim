@@ -64,10 +64,9 @@ $(document).ready(function () {
     // submitted to server to allow for delete from database
     function editPageDeleteQuestionRow() {
         // add request to delete to management form data
-        $(this)
-            .siblings("input[type=checkbox]").prop("checked", true)
-            .closest(".question-form").children().hide();
-
+        $(this).siblings("input[type=checkbox]").prop("checked", true)
+            .then($(this).closest(".question-form").children().hide());
+            
         //Focus the Question field of the last rows
         $(".question-form:last").find("input:first").focus()
     }
