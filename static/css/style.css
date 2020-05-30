@@ -23,7 +23,7 @@ a:hover {
     z-index: 1;
 }
 .page-wrapper {
-    background-image: url("/static/images/question-mark-background-vector.jpg");
+    background-image: url("https://quizim-bucket.s3-eu-west-1.amazonaws.com/images/question-mark-background-vector.jpg");
     min-height: 100vh;
     background-repeat: no-repeat;
     background-attachment: fixed;
