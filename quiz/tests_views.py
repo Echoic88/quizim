@@ -10,6 +10,10 @@ class CreateQuizViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         cls.client = Client()
         cls.user = User.objects.create(
             username="test_user",
@@ -36,6 +40,10 @@ class CreateQuizViewTest(TestCase):
 class EditQuizViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         cls.client = Client()
         cls.user = User.objects.create(
             username="test_user",
@@ -84,6 +92,10 @@ class EditQuizViewTest(TestCase):
 class PlayQuizViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         cls.client = Client()
         cls.user = User.objects.create(
             username="test_user",

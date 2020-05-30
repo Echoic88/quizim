@@ -8,8 +8,11 @@ import uuid
 
 
 class QuizFormTest(TestCase):
-    
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username="test_user",
             password="12Pass90"
@@ -51,8 +54,11 @@ class QuizFormTest(TestCase):
 
 
 class QuestionFormTest(TestCase):
-
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username="test_user",
             password="12Pass90"
@@ -146,8 +152,11 @@ class QuestionFormTest(TestCase):
 
 
 class CreateQuestionModelFormSetTest(TestCase):
-
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username="test_user",
             password="12Pass90"
@@ -178,8 +187,11 @@ class CreateQuestionModelFormSetTest(TestCase):
         
 
 class EditQuestionModelFormSetTest(TestCase):
-
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username="test_user",
             password="12Pass90"

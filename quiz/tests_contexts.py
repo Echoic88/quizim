@@ -7,6 +7,10 @@ import uuid
 class PercentageCorrectAnswerTest(TestCase):
 
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.quiz_creator = User.objects.create(
             username="test_creator",
             password="1290Pass"

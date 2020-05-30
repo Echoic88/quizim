@@ -8,9 +8,14 @@ from .models import Quiz, PlayedQuiz, Question, PlayerAnswer, PaidQuiz
 # Create your tests here.
 class QuizTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
+
+        self.user = User.objects.create_user(
             username = "test_user",
-            password = "1290abyz"
+            password = "1290Pass"
         )
 
         self.quiz = Quiz(
@@ -43,6 +48,10 @@ class QuizTest(TestCase):
 
 class PlayedQuizTest(TestCase):
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.quiz_creator = User.objects.create(
             username="quiz_creator",
             password="12Pass90"
@@ -75,6 +84,10 @@ class PlayedQuizTest(TestCase):
 
 class QuestionTest(TestCase):
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username = "test_user",
             password = "1290Pass",
@@ -142,6 +155,10 @@ class QuestionTest(TestCase):
 class PlayerAnswerTest(TestCase):
     
     def setUp(self):
+        User.objects.create_user(
+            username = "admin",
+            password = "1290Pass"
+        )
         self.user = User.objects.create(
             username = "test_user",
             password = "1290abyz"
