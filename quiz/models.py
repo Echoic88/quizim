@@ -38,7 +38,7 @@ class PlayedQuiz(models.Model):
 
     def score(self):
         answers = PlayerAnswer.objects.filter(player=self.player).filter(quiz=self.quiz)
-        score = round((answers.filter(correct=True).count()/answers.count()),2)*100
+        score = int(round((answers.filter(correct=True).count()/answers.count()),2)*100)
         return score
     
     def __str__(self):

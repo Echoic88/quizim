@@ -10,99 +10,107 @@
 {{ bar_chart_data|json_script:"bar_chart_data" }}
 
 <div class="row">
-    <div class="col border border-dark p-5 my-3">
-        <h2>Your Details</h2>
-        <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form|crispy }}
-            {{ profile_form|crispy }}
-            <div class="profile-image-container">
-                {% if user.profile.profile_pic %}
-                <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" alt="User's profile picture"
-                    class="profile-image">
-                {% else %}
-                <img src="{% static 'userarea/images/question-mark-profile-temp.jpg' %}" alt="Default profile picture"
-                    class="profile-image">
-                {% endif %}
-            </div>
-            <button type="submit" class="btn btn-success btn-block">Save</button>
-        </form>
+    <div class="col-12 d-flex justify-content-center p-5 my-3">
+        <div class="form-general border border-dark">
+            <h2>Your Details</h2>
+            <form action="{% url 'userarea:update_user_details' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form|crispy }}
+                {{ profile_form|crispy }}
+                <div class="profile-image-container my-3">
+                    {% if user.profile.profile_pic %}
+                    <img src="{{ MEDIA_URL }}{{ user.profile.profile_pic }}" alt="User's profile picture"
+                        class="profile-image">
+                    {% else %}
+                    <img src="{% static 'userarea/images/question-mark-profile-temp.jpg' %}"
+                        alt="Default profile picture" class="profile-image">
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Save</button>
+            </form>
+        </div>
     </div>
 </div>
 <div class="row">
-    <div class="col border border-dark p-5 my-3">
-        <h2>Change Password</h2>
-        <form action="{% url 'userarea:change_password' %}" method="POST">
-            {% csrf_token %}
-            {{ password_form|crispy }}
-            <button type="submit" class="btn btn-block btn-success">Change Password</button>
-        </form>
-        {% if messages %}
-        {% for message in messages %}
-        <p>Your password has been changed!</p>
-        {% endfor %}
-        {% endif %}
+    <div class="col d-flex justify-content-center p-5 my-3">
+        <div class="form-general border border-dark">
+            <h2>Change Password</h2>
+            <form action="{% url 'userarea:change_password' %}" method="POST">
+                {% csrf_token %}
+                {{ password_form|crispy }}
+                <button type="submit" class="btn btn-block btn-success">Change Password</button>
+            </form>
+            {% if messages %}
+            {% for message in messages %}
+            <p>Your password has been changed!</p>
+            {% endfor %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% if quizes_played %}
-<div class="row">
-    <div class="col">
-        <div class="graphs-wrapper">
+<div class="row justify-content-center">
+    <div class="col-10 justify-content-center">
+        <h2>Your last five quizes</h2>
+        <div class="graph-wrapper">
             <div id="bar-chart"></div>
         </div>
     </div>
 </div>
 {% endif %}
 <div class="row">
-    <div class="col-12 col-md-4 border border-dark p-5 my-3">
+    <div class="col-12 col-md-4 p-5 my-3">
         {% if user_quizes %}
-        <h2>Quizes you've created:</h2>
-        <ul>
-            {% for quiz in user_quizes %}
-            <li>
-                {{ quiz.quiz_name }}
+        <h2 class="text-center">Quizes you've created:</h2>
+        {% for quiz in user_quizes %}
+        <div class="row">
+            <div class="col-8">
+                <p>{{ quiz.quiz_name }}</p>
+            </div>
+            <div class="col-4">
                 <a href="{% url 'quiz:edit_quiz' quiz.id %}" class="btn btn-sm btn-primary" role="button">Edit</a>
-            </li>
-            {% endfor %}
-        </ul>
+            </div>
+        </div>
+        {% endfor %}
         {% else %}
         <h2>Looks like you haven't made any quizes :-(</h2>
         <a type="button" href="{% url 'quiz:create_quiz' %}" class="btn btn-primary">Create a quiz</a>
         {% endif %}
     </div>
-    <div class="col-12 col-md-4 border border-dark p-5 my-3">
+    <div class="col-12 col-md-4 p-5 my-3">
         {% if quizes_played %}
-        <h2>Quizes you've played:</h2>
-        <ul>
-            {% for quiz in quizes_played %}
-            <li>{{ quiz.quiz.quiz_name }} - {{ quiz.score }}</li>
-            {% endfor %}
-        </ul>
+        <h2 class="text-center">Quizes you've played:</h2>
+        {% for quiz in quizes_played %}
+        <div class="row">
+            <div class="col-8">{{ quiz.quiz.quiz_name }}</div>
+            <div class="col-4">{{ quiz.score }}&#37;</div>
+        </div>
+        {% endfor %}
         {% else %}
         <h2>Looks like you haven't played any quizes :-(</h2>
         {% endif %}
     </div>
-    <div class="col-12 col-md-4  border border-dark p-5 my-3">
+    <div class="col-12 col-md-4 p-5 my-3">
         {% if quizes_purchased %}
-        <h2>Quizes you've bought:</h2>
-        <ul>
-            {% for purchase in quizes_purchased %}
-            {% if purchase.played %}
-            <li>
+        <h2 class="text-center">Quizes you've bought:</h2>
+        {% for purchase in quizes_purchased %}
+        <div class="row">
+            <div class="col-8">
                 {{ purchase.quiz.quiz_name }}
-                <span>You have played this quiz</span>
-            </li>
-            {% else %}
-            <li>
-                {{ purchase.quiz.quiz_name }}
+            </div>
+            <div class="col-4">
+                {% if purchase.played %}
+                <span>Already played</span>
+                {% else %}
                 <a href="{% url 'quiz:play_quiz' purchase.quiz.id %}" class="btn btn-success" role="button">Play
                     Quiz</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
+    {% endif %}
+</div>
 </div>
 {% endblock %}
 {% block js %}

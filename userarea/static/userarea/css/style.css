@@ -2,8 +2,31 @@
     height:100px;
     width:auto;
 }
-
 .profile-image {
     height:100%;
     width:auto;
+}
+.graph-wrapper {
+    height:300px;
+    width:90%;
+}
+#bar-chart {
+    height:100%;
+}
+.ct-series-a .ct-bar {
+    stroke: rgb(103, 199, 146);
+    stroke-width: 8%;
+  }
+.ct-label {
+    color:#000;
+    font-size:0.75em;
+}
+
+@media (min-width:768px) {
+    .graph-wrapper {
+        width:60%;
+    }
+    .ct-series-a .ct-bar {
+        stroke-width: 15%;
+      }
 }

@@ -29,19 +29,19 @@ $(document).ready(function () {
                 "name":newName,
                 "id":newId,
             });
-        })
+        });
             
-        newForm.insertAfter($(".question-form").last())
-        $(".question-form:last").find("input[type='text']").val("")
+        newForm.insertAfter($(".question-form").last());
+        $(".question-form:last").find("input[type='text']").val("");
             
-        numForms++
+        numForms++;
         $("#id_form-TOTAL_FORMS").val(numForms);
 
         //Plus and minus buttons display correctly
-        plusMinusBtnsConfig()
+        plusMinusBtnsConfig();
 
         // Focus the Question field of the last form row
-        $(".question-form:last").find("input:first").focus()
+        $(".question-form:last").find("input:first").focus();
     
     }
 
@@ -55,7 +55,7 @@ $(document).ready(function () {
         $(this).closest(".question-form").remove();
 
         //Focus the Question field of the last rows
-        $(".question-form:last").find("input:first").focus()
+        $(".question-form:last").find("input:first").focus();
     }
 
     // Delete a question row when editing a quiz
@@ -68,7 +68,7 @@ $(document).ready(function () {
             .then($(this).closest(".question-form").children().hide());
             
         //Focus the Question field of the last rows
-        $(".question-form:last").find("input:first").focus()
+        $(".question-form:last").find("input:first").focus();
     }
 
     // call functions
@@ -88,7 +88,7 @@ $(document).ready(function () {
     // If focus isnt expressly removed from the form field it saves as a blank entry
     $(".save-quiz-btn").mouseover(function() {
         $(this).focus();
-    })
+    });
     $(".save-quiz-btn").click(function() {
         $(this).focus();
     });

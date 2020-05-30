@@ -47,12 +47,12 @@ $(document).ready(function () {
             "line2": formData[2].value,
             "city": formData[3].value,
             "postal_code": formData[4].value,
-        }
+        };
         let billingDetails = {
             "name": cardHolder,
             "address": address
-        }
-        return billingDetails
+        };
+        return billingDetails;
     }
 
     //accept payment on paymentForm submit
@@ -81,4 +81,4 @@ $(document).ready(function () {
             }
         });
     });
-})
+});

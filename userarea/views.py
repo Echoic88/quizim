@@ -9,7 +9,6 @@ from accounts.forms import ProfileForm
 from quiz.models import Quiz, Question, PlayerAnswer, PlayedQuiz, Order
 from .forms import UserUpdateForm
 
-
 # Create your views here.
 def index(request):
     """
