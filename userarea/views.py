@@ -35,6 +35,11 @@ def index(request):
         user_quizes = Quiz.objects.filter(creator=request.user)
         quizes_played = PlayedQuiz.objects.filter(player=request.user)
         quizes_purchased = Order.objects.filter(customer=request.user)
+        quizes_played_list = []
+        for purchase in quizes_purchased:
+            for played in quizes_played:
+                if purchase.quiz == played.quiz:
+                    quizes_played_list.append(played.quiz)
 
         password_form = PasswordChangeForm(request.user)
 
@@ -45,7 +50,8 @@ def index(request):
             "quizes_played": quizes_played,
             "quizes_purchased": quizes_purchased,
             "password_form": password_form,
-            "bar_chart_data": bar_chart_data
+            "bar_chart_data": bar_chart_data,
+            "quizes_played_list": quizes_played_list
         }
 
         return render(request, "userarea/index.html", context)
@@ -93,7 +99,8 @@ def change_password(request):
             messages.info(request, "Your password was successfully updated!")
             return redirect(reverse("userarea:index"))
         else:
-            messages.error(request, "Please correct the error below.")
+            messages.error(request, "Invalid details. Please try again")
+            return redirect(reverse("userarea:index"))
     else:
         password_form = PasswordChangeForm(request.user)
     return redirect(reverse("userarea:index"))
