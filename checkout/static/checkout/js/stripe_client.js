@@ -73,6 +73,7 @@ $(document).ready(function () {
             if (result.error) {
                 $("#stripe-error-message").text(result.error.message);
                 $("#credit-card-errors").show();
+                $("#paymentButton").show();
             } else {
                 // The payment has been processed!
                 if (result.paymentIntent.status === "succeeded") {
