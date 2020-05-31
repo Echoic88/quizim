@@ -7,7 +7,11 @@ from .models import Profile
 
 
 class SignUpForm(UserCreationForm):
-    
+    """
+    Form used on user registration
+    Subclassed from UserCreationForm with email field included.
+    Email is required
+    """
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
@@ -17,9 +21,10 @@ class SignUpForm(UserCreationForm):
         self.fields["email"].required = True
 
 
-
 class ProfileForm(forms.ModelForm):
-    
+    """
+    User Profile/Personal details form
+    """
     class Meta:
         model = Profile
         fields = [
@@ -31,8 +36,7 @@ class ProfileForm(forms.ModelForm):
             "profile_pic",
             "receive_email"
         ]
-        
+
         widgets = {
-            "country":CountrySelectWidget()
+            "country": CountrySelectWidget()
         }
-        

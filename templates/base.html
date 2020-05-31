@@ -68,7 +68,7 @@
           <div class="col-md-4 d-none d-md-flex justify-content-center align-items-center">
             {% if user.is_authenticated %}
             <span>Hi {{ user.username }}</span>
-            <a href="{% url 'accounts:signout' %}" role="button" class="btn btn-danger btn-sm">Logout</a>
+            <a href="{% url 'accounts:signout' %}" role="button" class="btn btn-danger btn mx-2">Logout</a>
             <a href="{% url 'cart:view_cart' %}" class="header-cart">
               <i class="fas fa-shopping-cart"></i>
               <span class="sr-only">Shopping Cart</span>
@@ -114,18 +114,16 @@
           {% endblock %}
         </div>
       </main>
-
       <footer class="container-fluid">
         <div class="row">
-          <div class="col d-flex align-items-center">
-            <h3>M4 Project</h3>
+          <div class="col">
+            <h3>M4 Project - Quizim</h3>
           </div>
         </div>
       </footer>
     </div>
   </div>
 </body>
-
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -135,5 +133,4 @@
 <script src="https://kit.fontawesome.com/f66fbe929e.js" crossorigin="anonymous"></script>
 {% block js %}
 {% endblock %}
-
 </html>
