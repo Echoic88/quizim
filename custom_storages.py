@@ -1,4 +1,4 @@
-import django.conf import settings
+from django.conf import settings
 from django.storages.backends import S3BotoStorage
 
 
