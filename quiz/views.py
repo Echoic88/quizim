@@ -9,13 +9,12 @@ from .forms import QuizForm, CreateQuestionModelFormSet, EditQuestionModelFormSe
 from .models import Question, Quiz, PlayerAnswer, PlayedQuiz
 import uuid
 
-# Create your views here.
 
+# Create your views here.
 def index(request):
     """
     Temporary home page for testing quiz links
     """
-    
     question_man_list = []
     for i in range(4):
         question_man_list.append("images/question-man{0}.png".format(i))
@@ -30,9 +29,9 @@ def index(request):
                     played_quizes_list.append(quiz)
 
         return render(request, "quiz/index.html", {
-            "question_man_list":question_man_list,
-            "quizes":quizes,
-            "played_quizes_list":played_quizes_list
+            "question_man_list": question_man_list,
+            "quizes": quizes,
+            "played_quizes_list": played_quizes_list
         })
 
     else:
@@ -66,30 +65,30 @@ def create_quiz(request):
         current_site = get_current_site(request)
         subject = "New Quiz!"
         quiz_maker = request.user.username
-        from_mail="quizm4project@gmail.com"
+        from_mail = "quizm4project@gmail.com"
         message = render_to_string("quiz/new-quiz-email.html", {
             "domain": current_site.domain,
-            "quiz_maker":quiz_maker,
-            "quiz_id":q.id
+            "quiz_maker": quiz_maker,
+            "quiz_id": q.id
         })
 
         for person in people_to_email:
             recipient_name = "{0} {1}".format(person.user.first_name, person.user.last_name)
             recipient_email = person.user.email
-            send_mail(subject, message, from_mail, [recipient_email,])
+            send_mail(subject, message, from_mail, [recipient_email, ])
 
         messages.info(request, "Your quiz has been created. View and edit your quiz in the Userarea")
         return redirect(reverse("quiz:index"))
 
     else:
         quiz_form = QuizForm()
-        questions_formset = CreateQuestionModelFormSet(queryset = Question.objects.none())
-        
+        questions_formset = CreateQuestionModelFormSet(queryset=Question.objects.none())
+
     return render(request, "quiz/create-quiz.html", {
-        "quiz_form":quiz_form,
-        "questions_formset":questions_formset
+        "quiz_form": quiz_form,
+        "questions_formset": questions_formset
     })
-    
+
 
 def edit_quiz(request, id):
     """
@@ -97,7 +96,6 @@ def edit_quiz(request, id):
     """
     quiz = Quiz.objects.get(id=id)
     questions = Question.objects.filter(quiz=quiz)
-
 
     if request.method == 'POST':
         formset = EditQuestionModelFormSet(
@@ -114,7 +112,7 @@ def edit_quiz(request, id):
                             f.save()
                         else:
                             f.id = uuid.uuid4()
-                            f.save()  
+                            f.save()
 
                 formset.save(commit=False)
                 for object in formset.deleted_objects:
@@ -124,12 +122,11 @@ def edit_quiz(request, id):
                     print("form is not valid")
 
                 messages.info(request, "Your quiz has been saved successfully.")
-                return redirect(reverse("userarea:index")) 
+                return redirect(reverse("userarea:index"))
 
         except:
             messages.info(request, formset.errors)
-            return redirect(reverse("quiz:index")) 
-
+            return redirect(reverse("quiz:index"))
 
     else:
         formset = EditQuestionModelFormSet(
@@ -137,7 +134,7 @@ def edit_quiz(request, id):
         )
 
     return render(request, "quiz/edit-quiz.html", {
-        "quiz":quiz,
+        "quiz": quiz,
         "formset": formset
     })
 
@@ -162,6 +159,7 @@ def play_quiz(request, id):
                 question = questions.get(question=form["question"].value())
 
                 answer = PlayerAnswer(
+                    id=uuid.uuid4(),
                     question=question,
                     player_answer=form["player_answer"].value(),
                     quiz=quiz,
@@ -181,17 +179,19 @@ def play_quiz(request, id):
 
         except:
             messages.error(request, "Sorry, there was an error saving your quiz. Please try another")
+            messages.error(request, form.errors)
+            messages.error(request, formset.errors)
             return redirect(reverse("quiz:index"))
-            
+
     else:
         formset = PlayerAnswerModelFormSet(
             queryset=questions
         )
 
         return render(request, "quiz/play-quiz.html", {
-            "quiz":quiz,
-            "questions":questions,
-            "formset":formset
+            "quiz": quiz,
+            "questions": questions,
+            "formset": formset
         })
 
 
@@ -201,22 +201,22 @@ def quiz_result(request, id):
     """
     questions = Question.objects.filter(quiz=id)
     player_answers = PlayerAnswer.objects.filter(player=request.user, question__quiz=id).values("question", "player_answer", "correct")
-    
-    results=[]
+
+    results = []
 
     for question in questions:
         correct_answer = question.correct_answer
-        player_answer_dict = player_answers.get(question = question.id)
+        player_answer_dict = player_answers.get(question=question.id)
         player_answer = player_answer_dict["player_answer"]
         correct = player_answer_dict["correct"]
 
         result = {
-            "question":question.question,
-            "correct_answer":correct_answer,
-            "player_answer":player_answer,
+            "question": question.question,
+            "correct_answer": correct_answer,
+            "player_answer": player_answer,
             "correct": correct
         }
 
         results.append(result)
 
-    return render(request, "quiz/quiz-result.html", {"results":results})
+    return render(request, "quiz/quiz-result.html", {"results": results})
