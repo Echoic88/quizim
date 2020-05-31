@@ -108,6 +108,10 @@ Heroku
 Ensure requirements.txt is up-to-date and includes gunicorn and Procfile is present push to Heroku git repository
 From CLI start all the application using heroku ps:scale web=1.
 
+Deployed at:
+https://quizim.herokuapp.com/
+
+
 ## Credits
 In addition to Code Insititute lessons the following sites were used extensively to research functionality in designing this site.
 
